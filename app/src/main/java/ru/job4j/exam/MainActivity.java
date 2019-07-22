@@ -1,5 +1,6 @@
 package ru.job4j.exam;
 
+
 import android.app.DatePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -63,36 +65,9 @@ public class MainActivity extends AppCompatActivity {
         textViewQuestion = findViewById(R.id.textViewQuestion);
         this.fillForm();
 
-        buttonNext.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int id = radioGroupVariants.getCheckedRadioButtonId();
-                        if (id == -1) {
-                            Toast.makeText(MainActivity.this, "Choose the answer", Toast.LENGTH_SHORT).show();
-                        } else {
-                            saveUserChoise(id);
-                            showAnswer();
-                            position++;
-                            fillForm();
-                        }
-                    }
-                }
-        );
+        buttonNext.setOnClickListener(this::nextBtn);
 
-        buttonPrew.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int id = radioGroupVariants.getCheckedRadioButtonId();
-                        if (id != -1) {
-                            saveUserChoise(id);
-                        }
-                        position--;
-                        fillForm();
-                    }
-                }
-        );
+        buttonPrew.setOnClickListener(this::prevBtn);
 
 
 //данный код предназначен для другой активности, где используется datapicker
@@ -185,5 +160,26 @@ public class MainActivity extends AppCompatActivity {
         question.setUserChoise(id - 1);
     }
 
+    private void nextBtn(View view) {
+        int id = radioGroupVariants.getCheckedRadioButtonId();
+        if (id == -1) {
+            Toast.makeText(MainActivity.this, "Choose the answer", Toast.LENGTH_SHORT).show();
+        } else {
+            saveUserChoise(id);
+            showAnswer();
+            position++;
+            fillForm();
+        }
 
+    }
+
+    private void prevBtn(View view) {
+        int id = radioGroupVariants.getCheckedRadioButtonId();
+        if (id != -1) {
+            saveUserChoise(id);
+        }
+        position--;
+        fillForm();
+
+    }
 }
