@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     DatePickerDialog picker;
@@ -18,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.custom_layout);
-        eText=(EditText) findViewById(R.id.editText1);
+        setContentView(R.layout.activity_main);
+        /*eText=(EditText) findViewById(R.id.editText1);
         eText.setInputType(InputType.TYPE_NULL);
         eText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                         }, year, month, day);
                 picker.show();
             }
-        });
+        });*/
 
 
     }

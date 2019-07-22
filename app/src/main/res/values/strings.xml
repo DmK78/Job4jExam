@@ -2,6 +2,10 @@
     <string name="app_name">Job4j Exam</string>
     <string name="domain_prompt">Выберите область</string>
     <string name="exp_date">Дата проведения испытания</string>
+    <string name="hello">Привет, Петр Арсентьев!</string>
+    <string name="radiobutton">Радио кнопка</string>
+    <string name="buttonBack">Назад</string>
+    <string name="buttonForward">Далее</string>
     <string-array name="domain_arrays">
         <item>Выберите область</item>
         <item>Московская</item>

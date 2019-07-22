@@ -6,9 +6,10 @@
     android:orientation="vertical">
 
     <TextView
+        style="@style/CustomText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello, Petr Arsentev!" />
+        android:text="@string/hello" />
 
     <RadioGroup
         android:layout_width="wrap_content"
@@ -20,25 +21,25 @@
             android:id="@+id/radioButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/radiobutton" />
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/radiobutton" />
 
         <RadioButton
             android:id="@+id/radioButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/radiobutton" />
 
         <RadioButton
             android:id="@+id/radioButton4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/radiobutton" />
 
     </RadioGroup>
 
@@ -49,17 +50,19 @@
 
         <Button
             android:id="@+id/button3"
+            style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Назад" />
+            android:text="@string/buttonBack" />
 
         <Button
             android:id="@+id/button4"
+            style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Далее" />
+            android:text="@string/buttonForward" />
     </LinearLayout>
 </LinearLayout>
 
