@@ -18,8 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ExamActivity extends AppCompatActivity {
-    DatePickerDialog picker;
-    EditText eText;
     private static final String TAG = "ExamActivity";
     public static final String HINT_FOR = "hint_for";
     public static final String QUESTION = "question";
@@ -87,28 +85,6 @@ public class ExamActivity extends AppCompatActivity {
 
         buttonPrew.setOnClickListener(this::prevBtn);
 
-
-//данный код предназначен для другой активности, где используется datapicker
-        /*eText=(EditText) findViewById(R.id.editText1);
-        eText.setInputType(InputType.TYPE_NULL);
-        eText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar cldr = Calendar.getInstance();
-                int day = cldr.get(Calendar.DAY_OF_MONTH);
-                int month = cldr.get(Calendar.MONTH);
-                int year = cldr.get(Calendar.YEAR);
-                // date picker dialog
-                picker = new DatePickerDialog(ExamActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                eText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            }
-                        }, year, month, day);
-                picker.show();
-            }
-        });*/
     }
 
     @Override

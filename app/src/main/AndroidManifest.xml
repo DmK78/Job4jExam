@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ResultActivity"></activity>
         <activity android:name=".HintActivity" />
+        <activity android:name=".CustomActivity" />
         <activity android:name=".ExamActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
