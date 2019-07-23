@@ -71,20 +71,6 @@ public class ExamActivity extends AppCompatActivity {
         buttonPrew = findViewById(R.id.buttonPrew);
         textViewQuestion = findViewById(R.id.textViewQuestion);
         this.fillForm();
-
-        buttonNext.setOnClickListener(this::nextBtn);
-
-        buttonHint.setOnClickListener(
-                view -> {
-                    Intent intent = new Intent(ExamActivity.this, HintActivity.class);
-                    intent.putExtra(HINT_FOR, position);
-                    intent.putExtra(QUESTION, this.questions.get(position).getText());
-                    startActivity(intent);
-                }
-        );
-
-        buttonPrew.setOnClickListener(this::prevBtn);
-
     }
 
     @Override
@@ -143,10 +129,9 @@ public class ExamActivity extends AppCompatActivity {
     private void showAnswer() {
         int id = radioGroupVariants.getCheckedRadioButtonId();
         Question question = this.questions.get(this.position);
-        Toast.makeText(
-                this, "Your answer is " + id + ", correct is " + question.getAnswer(),
-                Toast.LENGTH_SHORT
-        ).show();
+        Toast.makeText(this, String.format("Your answer is %d, correct is %d",
+                id, question.getAnswer()), Toast.LENGTH_SHORT)
+                .show();
     }
 
     private void saveUserChoise(int id) {
@@ -154,7 +139,7 @@ public class ExamActivity extends AppCompatActivity {
         question.setUserChoise(id - 1);
     }
 
-    private void nextBtn(View view) {
+    public void onClickNext(View view) {
         int id = radioGroupVariants.getCheckedRadioButtonId();
         if (id == -1) {
             Toast.makeText(ExamActivity.this, "Choose the answer", Toast.LENGTH_SHORT).show();
@@ -175,10 +160,9 @@ public class ExamActivity extends AppCompatActivity {
                 fillForm();
             }
         }
-
     }
 
-    private void prevBtn(View view) {
+    public void onClickPrev(View view) {
         int id = radioGroupVariants.getCheckedRadioButtonId();
         if (id != -1) {
             saveUserChoise(id);
@@ -189,6 +173,13 @@ public class ExamActivity extends AppCompatActivity {
         }
         position--;
         fillForm();
+    }
 
+
+    public void onClickHint(View view) {
+        Intent intent = new Intent(ExamActivity.this, HintActivity.class);
+        intent.putExtra(HINT_FOR, position);
+        intent.putExtra(QUESTION, ExamActivity.this.questions.get(position).getText());
+        ExamActivity.this.startActivity(intent);
     }
 }
