@@ -1,19 +1,15 @@
 package ru.job4j.exam;
 
-
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,11 +23,11 @@ public class ExamActivity extends AppCompatActivity {
     private int position = 0;
     private int rightAnswers = 0;
     private boolean isLastAnswerWasRight = false;
-    RadioGroup radioGroupVariants;
-    Button buttonNext;
-    Button buttonHint;
-    Button buttonPrew;
-    TextView textViewQuestion;
+    private RadioGroup radioGroupVariants;
+    private Button buttonNext;
+    private Button buttonHint;
+    private Button buttonPrew;
+    private TextView textViewQuestion;
     private final List<Question> questions = Arrays.asList(
             new Question(
                     1, "How many primitive variables does Java have?",
