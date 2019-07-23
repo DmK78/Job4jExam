@@ -2,6 +2,7 @@ package ru.job4j.exam;
 
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,14 +17,21 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class ExamActivity extends AppCompatActivity {
     DatePickerDialog picker;
     EditText eText;
     private static final String TAG = "ExamActivity";
+    public static final String HINT_FOR = "hint_for";
+    public static final String QUESTION = "question";
+    public static final String RIGHT_ANSWERS = "right_answers";
+    public static final String ANSWERS_SUM = "answers_sum";
     private int rotateCounter = 0;
     private int position = 0;
+    private int rightAnswers = 0;
+    private boolean isLastAnswerWasRight = false;
     RadioGroup radioGroupVariants;
     Button buttonNext;
+    Button buttonHint;
     Button buttonPrew;
     TextView textViewQuestion;
     private final List<Question> questions = Arrays.asList(
@@ -61,11 +69,21 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "rotate counter is " + rotateCounter);
         radioGroupVariants = findViewById(R.id.RadioGroupVariants);
         buttonNext = findViewById(R.id.buttonNext);
+        buttonHint = findViewById(R.id.buttonHint);
         buttonPrew = findViewById(R.id.buttonPrew);
         textViewQuestion = findViewById(R.id.textViewQuestion);
         this.fillForm();
 
         buttonNext.setOnClickListener(this::nextBtn);
+
+        buttonHint.setOnClickListener(
+                view -> {
+                    Intent intent = new Intent(ExamActivity.this, HintActivity.class);
+                    intent.putExtra(HINT_FOR, position);
+                    intent.putExtra(QUESTION, this.questions.get(position).getText());
+                    startActivity(intent);
+                }
+        );
 
         buttonPrew.setOnClickListener(this::prevBtn);
 
@@ -81,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
                 // date picker dialog
-                picker = new DatePickerDialog(MainActivity.this,
+                picker = new DatePickerDialog(ExamActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -131,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void fillForm() {
         buttonPrew.setEnabled(position != 0);
-        buttonNext.setEnabled(position != questions.size() - 1);
+        //buttonNext.setEnabled(position != questions.size() - 1);
         radioGroupVariants.clearCheck();
         Question question = questions.get(position);
         textViewQuestion.setText(question.getText());
@@ -163,12 +181,23 @@ public class MainActivity extends AppCompatActivity {
     private void nextBtn(View view) {
         int id = radioGroupVariants.getCheckedRadioButtonId();
         if (id == -1) {
-            Toast.makeText(MainActivity.this, "Choose the answer", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ExamActivity.this, "Choose the answer", Toast.LENGTH_SHORT).show();
         } else {
+            if (id == questions.get(position).getAnswer()) {
+                rightAnswers++;
+                isLastAnswerWasRight = true;
+            }
             saveUserChoise(id);
             showAnswer();
-            position++;
-            fillForm();
+            if (position == questions.size() - 1) {
+                Intent intent = new Intent(this, ResultActivity.class);
+                intent.putExtra(RIGHT_ANSWERS, rightAnswers);
+                intent.putExtra(ANSWERS_SUM, questions.size());
+                startActivity(intent);
+            } else {
+                position++;
+                fillForm();
+            }
         }
 
     }
@@ -177,6 +206,10 @@ public class MainActivity extends AppCompatActivity {
         int id = radioGroupVariants.getCheckedRadioButtonId();
         if (id != -1) {
             saveUserChoise(id);
+        }
+        if (isLastAnswerWasRight) {
+            rightAnswers--;
+            isLastAnswerWasRight = false;
         }
         position--;
         fillForm();

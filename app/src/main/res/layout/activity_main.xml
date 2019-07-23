@@ -57,6 +57,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/buttonBack" />
+        <Button
+            android:id="@+id/buttonHint"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Подсказка" />
 
         <Button
             android:id="@+id/buttonNext"
