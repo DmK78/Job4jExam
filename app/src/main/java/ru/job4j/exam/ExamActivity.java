@@ -10,16 +10,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.Arrays;
 import java.util.List;
 
 public class ExamActivity extends AppCompatActivity {
-    private static final String TAG = "ExamActivity";
     public static final String HINT_FOR = "hint_for";
     public static final String QUESTION = "question";
     public static final String RIGHT_ANSWERS = "right_answers";
     public static final String ANSWERS_SUM = "answers_sum";
-    private int rotateCounter = 0;
     private int position = 0;
     private int rightAnswers = 0;
     private boolean isLastAnswerWasRight = false;
@@ -28,7 +27,7 @@ public class ExamActivity extends AppCompatActivity {
     private Button buttonHint;
     private Button buttonPrew;
     private TextView textViewQuestion;
-    private final List<Question> questions = Arrays.asList(
+    private static final List<Question> questions = Arrays.asList(
             new Question(
                     1, "How many primitive variables does Java have?",
                     Arrays.asList(
@@ -57,10 +56,8 @@ public class ExamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState != null) {
-            rotateCounter = savedInstanceState.getInt("rotateCount");
+            position = savedInstanceState.getInt(QUESTION, 0);
         }
-        Log.d(TAG, "onCreate");
-        Log.d(TAG, "rotate counter is " + rotateCounter);
         radioGroupVariants = findViewById(R.id.RadioGroupVariants);
         buttonNext = findViewById(R.id.buttonNext);
         buttonHint = findViewById(R.id.buttonHint);
@@ -72,37 +69,33 @@ public class ExamActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy");
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("rotateCount", ++rotateCounter);
+        outState.putInt(QUESTION, position);
+
     }
 
     private void fillForm() {
