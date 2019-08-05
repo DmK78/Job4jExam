@@ -3,14 +3,13 @@ package ru.job4j.exam;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,6 +18,7 @@ public class ExamActivity extends AppCompatActivity {
     public static final String QUESTION = "question";
     public static final String RIGHT_ANSWERS = "right_answers";
     public static final String ANSWERS_SUM = "answers_sum";
+    public static final String USER_CHOICES = "userChoices";
     private int position = 0;
     private int rightAnswers = 0;
     private boolean isLastAnswerWasRight = false;
@@ -27,6 +27,7 @@ public class ExamActivity extends AppCompatActivity {
     private Button buttonHint;
     private Button buttonPrew;
     private TextView textViewQuestion;
+    private boolean readOnly = false;
     private static final List<Question> questions = Arrays.asList(
             new Question(
                     1, "How many primitive variables does Java have?",
@@ -63,6 +64,17 @@ public class ExamActivity extends AppCompatActivity {
         buttonHint = findViewById(R.id.buttonHint);
         buttonPrew = findViewById(R.id.buttonPrew);
         textViewQuestion = findViewById(R.id.textViewQuestion);
+        Intent intent = getIntent();
+        ArrayList<Integer> userChoices = intent.getIntegerArrayListExtra(USER_CHOICES);
+        if (userChoices != null) {
+            for (int i = 0; i < questions.size(); i++) {
+                questions.get(i).setUserChoise(userChoices.get(i));
+            }
+            readOnly = true;
+            for (int i = 0; i < radioGroupVariants.getChildCount(); i++) {
+                radioGroupVariants.getChildAt(i).setEnabled(false);
+            }
+        }
         this.fillForm();
     }
 
@@ -100,7 +112,7 @@ public class ExamActivity extends AppCompatActivity {
 
     private void fillForm() {
         buttonPrew.setEnabled(position != 0);
-        //buttonNext.setEnabled(position != questions.size() - 1);
+        //buttonNext.setEnabled(position <= questions.size() - 1 && readOnly);
         radioGroupVariants.clearCheck();
         Question question = questions.get(position);
         textViewQuestion.setText(question.getText());
@@ -140,10 +152,22 @@ public class ExamActivity extends AppCompatActivity {
             saveUserChoise(id);
             showAnswer();
             if (position == questions.size() - 1) {
-                Intent intent = new Intent(this, ResultActivity.class);
-                intent.putExtra(RIGHT_ANSWERS, rightAnswers);
-                intent.putExtra(ANSWERS_SUM, questions.size());
-                startActivity(intent);
+                if (!readOnly) {
+                    Intent intent = new Intent(this, ResultActivity.class);
+                    intent.putExtra(RIGHT_ANSWERS, rightAnswers);
+                    intent.putExtra(ANSWERS_SUM, questions.size());
+                    ArrayList<Integer> userChoices = new ArrayList<>();
+                    for (Question question : questions) {
+                        userChoices.add(question.getUserChoise());
+                    }
+                    intent.putIntegerArrayListExtra(USER_CHOICES, userChoices);
+                    startActivity(intent);
+                } else {
+                    clearUserChoices();
+                    Intent intent = new Intent(getApplicationContext(), ExamsActivity.class);
+                    startActivity(intent);
+                }
+
             } else {
                 position++;
                 fillForm();
@@ -170,5 +194,11 @@ public class ExamActivity extends AppCompatActivity {
         intent.putExtra(HINT_FOR, position);
         intent.putExtra(QUESTION, ExamActivity.this.questions.get(position).getText());
         ExamActivity.this.startActivity(intent);
+    }
+
+    public static void clearUserChoices() {
+        for (Question question : questions) {
+            question.setUserChoise(-1);
+        }
     }
 }

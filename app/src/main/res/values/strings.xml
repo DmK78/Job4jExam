@@ -6,6 +6,7 @@
     <string name="radiobutton">ответ</string>
     <string name="buttonBack">Назад</string>
     <string name="buttonForward">Далее</string>
+    <string name="title_save_result">Save result</string>
     <string-array name="domain_arrays">
         <item>Выберите область</item>
         <item>Московская</item>
