@@ -53,6 +53,7 @@ public class ChooseDataDialogFragment extends DialogFragment implements DatePick
     @Override
     public void onDetach() {
         super.onDetach();
+        callback.onPositiveDialogClick(new ChooseTimeDialogFragment());
         callback = null;
 
     }
