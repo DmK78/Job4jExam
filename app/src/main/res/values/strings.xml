@@ -7,6 +7,7 @@
     <string name="buttonBack">Назад</string>
     <string name="buttonForward">Далее</string>
     <string name="title_save_result">Save result</string>
+    <string name="title_choose_date_and_time">Choose date and time</string>
     <string-array name="domain_arrays">
         <item>Выберите область</item>
         <item>Московская</item>

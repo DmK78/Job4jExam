@@ -62,7 +62,7 @@ public class ExamsActivity extends AppCompatActivity {
             Exam exam = exams.get(i);
             examHolder.textViewInfo.setText(exam.getName());
             examHolder.textViewDate.setText(exam.getTime());
-            examHolder.textViewResult.setText(String.valueOf(exam.getResult()));
+            examHolder.textViewResult.setText(String.valueOf(exam.getResult())+" %");
         }
 
         @Override

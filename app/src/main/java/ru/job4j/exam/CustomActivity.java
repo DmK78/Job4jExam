@@ -27,7 +27,12 @@ public class CustomActivity extends AppCompatActivity {
             int year = cldr.get(Calendar.YEAR);
             // date picker dialog
             picker = new DatePickerDialog(CustomActivity.this,
-                    (view, year1, monthOfYear, dayOfMonth) -> editTextSelectDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1), year, month, day);
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year1, int monthOfYear, int dayOfMonth) {
+                            editTextSelectDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1);
+                        }
+                    }, year, month, day);
             picker.show();
         });
     }
