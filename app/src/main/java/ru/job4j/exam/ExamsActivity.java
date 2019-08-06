@@ -44,7 +44,7 @@ public class ExamsActivity extends AppCompatActivity {
     public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamHolder> {
         private List<Exam> exams;
         private LayoutInflater inflater;
-        private ItemClickListener mClickListener;
+      //  private ItemClickListener mClickListener;
 
         ExamAdapter(Context context, List<Exam> exams) {
             this.inflater = LayoutInflater.from(context);
@@ -92,18 +92,18 @@ public class ExamsActivity extends AppCompatActivity {
             }
         }
 
-        Exam getItem(int id) {
+       /* Exam getItem(int id) {
             return exams.get(id);
         }
 
         void setClickListener(ItemClickListener itemClickListener) {
             this.mClickListener = itemClickListener;
-        }
+        }*/
 
     }
-    public interface ItemClickListener {
+   /* public interface ItemClickListener {
         void onItemClick(View view, int position);
-    }
+    }*/
 
 
 

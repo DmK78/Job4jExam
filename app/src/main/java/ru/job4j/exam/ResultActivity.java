@@ -40,7 +40,7 @@ public class ResultActivity extends AppCompatActivity {
 
     public void saveExam(View view) {
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z");
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         String currentDateandTime = sdf.format(new Date());
         ExamActivity.clearUserChoices();
         Intent intent = new Intent(this, ExamsActivity.class);

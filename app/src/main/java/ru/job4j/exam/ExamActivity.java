@@ -1,6 +1,7 @@
 package ru.job4j.exam;
 
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ExamActivity extends AppCompatActivity {
+public class ExamActivity extends AppCompatActivity implements ConfirmHintDialogFragment.ConfirmHintDialogListener{
     public static final String HINT_FOR = "hint_for";
     public static final String QUESTION = "question";
     public static final String RIGHT_ANSWERS = "right_answers";
@@ -76,6 +77,16 @@ public class ExamActivity extends AppCompatActivity {
             }
         }
         this.fillForm();
+
+        buttonHint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment dialog = new ConfirmHintDialogFragment();
+                dialog.show(getSupportFragmentManager(), "dialog_tag");
+            }
+        });
+
+
     }
 
     @Override
@@ -190,15 +201,39 @@ public class ExamActivity extends AppCompatActivity {
 
 
     public void onClickHint(View view) {
-        Intent intent = new Intent(ExamActivity.this, HintActivity.class);
+
+
+
+        /*Intent intent = new Intent(ExamActivity.this, HintActivity.class);
         intent.putExtra(HINT_FOR, position);
         intent.putExtra(QUESTION, ExamActivity.this.questions.get(position).getText());
-        ExamActivity.this.startActivity(intent);
+        ExamActivity.this.startActivity(intent);*/
     }
+
+
 
     public static void clearUserChoices() {
         for (Question question : questions) {
             question.setUserChoise(-1);
         }
+    }
+
+    @Override
+    public void onPositiveDialogClick(DialogFragment dialog) {
+        //int answer = questions.get(position).getAnswer();
+        //String question = questions.get(position).getText();
+        //Intent intent = HintActivity.newIntent(ExamActivity.this, question, answer);
+
+
+        Intent intent = new Intent(getApplicationContext(),HintActivity.class);
+        intent.putExtra(HINT_FOR, position);
+        intent.putExtra(QUESTION, ExamActivity.this.questions.get(position).getText());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onNegativeDialogClick(DialogFragment dialog) {
+        Toast.makeText(this, "Молодец!!!", Toast.LENGTH_SHORT).show();
+
     }
 }
