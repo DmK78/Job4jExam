@@ -51,5 +51,6 @@ public class ResultActivity extends AppCompatActivity {
         intent.putExtra(HAS_SAVED, hasSaved);
         startActivity(intent);
 
+
     }
 }

@@ -56,13 +56,18 @@ public class ExamsActivity extends AppCompatActivity implements ConfirmDeleteAll
         setContentView(R.layout.exams);
         recycler = findViewById(R.id.examsRecyclerView);
         recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        Intent intent = getIntent();
-        if (intent.getBooleanExtra(ResultActivity.HAS_SAVED, false)) {
-            String date = intent.getStringExtra(ResultActivity.CURRENT_DATE);
-            float percent = intent.getFloatExtra(ResultActivity.PERCENT_OF_RIGHT_ANSWERS, 0);
-            ArrayList<Integer> userChoices = intent.getIntegerArrayListExtra(ExamActivity.USER_CHOICES);
-            exams.add(new Exam("result", date, (int) percent, userChoices));
+
+        if (savedInstanceState == null) { //проверяем, что активность была воссоздана не после поворота экрана
+            // если да, то создаем экзамен с ответами
+            Intent intent = getIntent();
+            if (intent.getBooleanExtra(ResultActivity.HAS_SAVED, false)) {
+                String date = intent.getStringExtra(ResultActivity.CURRENT_DATE);
+                float percent = intent.getFloatExtra(ResultActivity.PERCENT_OF_RIGHT_ANSWERS, 0);
+                ArrayList<Integer> userChoices = intent.getIntegerArrayListExtra(ExamActivity.USER_CHOICES);
+                exams.add(new Exam("result", date, (int) percent, userChoices));
+            }
         }
+
         adapter = new ExamAdapter(this, exams);
         this.recycler.setAdapter(adapter);
     }
