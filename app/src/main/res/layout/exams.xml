@@ -18,21 +18,6 @@
         app:layout_constraintTop_toTopOf="parent"></android.support.v7.widget.RecyclerView>
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:onClick="addNewExam"
-        app:backgroundTint="@android:color/background_light"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="@android:dimen/notification_large_icon_width"
-        app:srcCompat="@drawable/ic_add_circle_red_24dp" />
-
 </android.support.constraint.ConstraintLayout>
 
 

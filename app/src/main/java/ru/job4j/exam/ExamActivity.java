@@ -10,11 +10,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ExamActivity extends AppCompatActivity implements ConfirmHintDialogFragment.ConfirmHintDialogListener{
+public class ExamActivity extends AppCompatActivity implements ConfirmHintDialogFragment.ConfirmHintDialogListener {
     public static final String HINT_FOR = "hint_for";
     public static final String QUESTION = "question";
     public static final String RIGHT_ANSWERS = "right_answers";
@@ -77,7 +78,6 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
             }
         }
         this.fillForm();
-
         buttonHint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,15 +201,7 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
 
 
     public void onClickHint(View view) {
-
-
-
-        /*Intent intent = new Intent(ExamActivity.this, HintActivity.class);
-        intent.putExtra(HINT_FOR, position);
-        intent.putExtra(QUESTION, ExamActivity.this.questions.get(position).getText());
-        ExamActivity.this.startActivity(intent);*/
     }
-
 
 
     public static void clearUserChoices() {
@@ -219,20 +211,15 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
     }
 
     @Override
-    public void onPositiveDialogClick(DialogFragment dialog) {
-        //int answer = questions.get(position).getAnswer();
-        //String question = questions.get(position).getText();
-        //Intent intent = HintActivity.newIntent(ExamActivity.this, question, answer);
-
-
-        Intent intent = new Intent(getApplicationContext(),HintActivity.class);
+    public void onPositiveHintDialogClick(DialogFragment dialog) {
+        Intent intent = new Intent(getApplicationContext(), HintActivity.class);
         intent.putExtra(HINT_FOR, position);
         intent.putExtra(QUESTION, ExamActivity.this.questions.get(position).getText());
         startActivity(intent);
     }
 
     @Override
-    public void onNegativeDialogClick(DialogFragment dialog) {
+    public void onNegativeHintDialogClick(DialogFragment dialog) {
         Toast.makeText(this, "Молодец!!!", Toast.LENGTH_SHORT).show();
 
     }

@@ -35,7 +35,7 @@ public class ResultActivity extends AppCompatActivity {
         userChoices = intent.getIntegerArrayListExtra(ExamActivity.USER_CHOICES);
         percent = (float) rightAnswers / (float) answersSum * 100;
         textViewAnswers.setText("Quantity of questions: " + answersSum);
-        textViewRightAnswers.setText("Right answers: " + (int)percent+" %");
+        textViewRightAnswers.setText("Right answers: " + (int) percent + " %");
     }
 
     public void saveExam(View view) {
@@ -49,9 +49,6 @@ public class ResultActivity extends AppCompatActivity {
         intent.putIntegerArrayListExtra(ExamActivity.USER_CHOICES, userChoices);
         hasSaved = true;
         intent.putExtra(HAS_SAVED, hasSaved);
-
-        //intent.putExtra(PERCENT_OF_RIGHT_ANSWERS, rightAnswers / (answersSum / 100));
-
         startActivity(intent);
 
     }

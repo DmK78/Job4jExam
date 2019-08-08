@@ -13,7 +13,6 @@ public class ChooseDateTime extends AppCompatActivity implements ChooseDataDialo
     Button buttonChooseDateTime;
     TextView textViewDateTime;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,22 +25,15 @@ public class ChooseDateTime extends AppCompatActivity implements ChooseDataDialo
     public void onPositiveDialogClick(DialogFragment dialog) {
         DialogFragment newFragment1 = new ChooseTimeDialogFragment();
         newFragment1.show(getSupportFragmentManager(), "timePicker");
-
     }
 
     @Override
     public void onNegativeDialogClick(DialogFragment dialog) {
-
     }
 
     public void chooseDate(View view) {
-
-
         DialogFragment newFragment = new ChooseDataDialogFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
-
-
-
 
 }

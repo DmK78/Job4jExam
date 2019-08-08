@@ -7,4 +7,8 @@
     <string name="buttonBack">back</string>
     <string name="buttonForward">forward</string>
     <string name="radiobutton">answer</string>
+    <string name="title_save_result">Save result</string>
+    <string name="title_choose_date_and_time">Choose date and time</string>
+    <string name="delete_item">Delete</string>
+    <string name="add_item">Add</string>
 </resources>

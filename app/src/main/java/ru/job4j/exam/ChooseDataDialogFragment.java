@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,11 +56,10 @@ public class ChooseDataDialogFragment extends DialogFragment implements DatePick
         super.onDetach();
         callback.onPositiveDialogClick(new ChooseTimeDialogFragment());
         callback = null;
-
     }
+
     public interface ConfirmDateDialogListener {
         void onPositiveDialogClick(DialogFragment dialog);
         void onNegativeDialogClick(DialogFragment dialog);
-
     }
 }
