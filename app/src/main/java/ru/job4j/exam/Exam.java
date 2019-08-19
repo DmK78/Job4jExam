@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Exam {
-    private int id = 1;
+    private int id;
     private String name;
-    private String time;
+    private long time;
     private int result;
     private ArrayList<Integer> userCoices;
 
-    public Exam(String name, String time, int result, ArrayList<Integer> userChoices) {
-        this.id = id++;
+
+    public Exam(int id, String name, long time, int result, ArrayList<Integer> userCoices) {
+        this.id = id;
         this.name = name;
         this.time = time;
         this.result = result;
-        this.userCoices = userChoices;
+        this.userCoices = userCoices;
     }
 
     public ArrayList<Integer> getUserCoices() {
@@ -26,7 +27,7 @@ public class Exam {
         return name;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 

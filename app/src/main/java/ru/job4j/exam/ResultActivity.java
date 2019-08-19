@@ -9,7 +9,6 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ResultActivity extends AppCompatActivity {
     private TextView textViewRightAnswers;
@@ -43,7 +42,7 @@ public class ResultActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         String currentDateandTime = sdf.format(new Date());
         ExamActivity.clearUserChoices();
-        Intent intent = new Intent(this, ExamsActivity.class);
+        Intent intent = new Intent(this, ExamListFragment.class);
         intent.putExtra(CURRENT_DATE, currentDateandTime);
         intent.putExtra(PERCENT_OF_RIGHT_ANSWERS, percent);
         intent.putIntegerArrayListExtra(ExamActivity.USER_CHOICES, userChoices);

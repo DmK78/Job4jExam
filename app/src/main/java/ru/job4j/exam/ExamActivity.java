@@ -175,7 +175,7 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
                     startActivity(intent);
                 } else {
                     clearUserChoices();
-                    Intent intent = new Intent(getApplicationContext(), ExamsActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), ExamListFragment.class);
                     startActivity(intent);
                 }
 
