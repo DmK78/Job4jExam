@@ -1,6 +1,7 @@
 package ru.job4j.exam;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class ExamUpdateFragment extends Fragment {
+import ru.job4j.exam.Data.Exam;
 
+public class ExamUpdateFragment extends Fragment {
+ExamsCore examsCore = ExamsCore.getInstance();
     private SQLiteDatabase store;
 
     @Nullable
@@ -22,20 +25,17 @@ public class ExamUpdateFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.exam_update, container, false);
         this.store = new ExamBaseHelper(this.getContext()).getWritableDatabase();
-        Bundle args = getArguments();
+        //Bundle args = getArguments();
         final EditText edit = view.findViewById(R.id.title);
-        edit.setText(args.getString("name"));
+        edit.setText(examsCore.getCurrentExam().getName());
         Button save = view.findViewById(R.id.save);
         save.setOnClickListener(
                 btn -> {
-                    ContentValues value = new ContentValues();
-                    value.put(ExamDbSchema.ExamTable.Cols.TITLE, edit.getText().toString());
-                    store.update(ExamDbSchema.ExamTable.NAME, value, "id = ?", new String[] { String.valueOf(args.getInt("id"))});
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    fm.beginTransaction()
-                            .replace(R.id.list, new ExamListFragment())
-                            .addToBackStack(null)
-                            .commit();
+
+                    examsCore.examUptading=true;
+                    //examsCore.getCurrentExam().setName(edit.getText().toString());
+                    Intent intent = new Intent(getContext(),ExamActivity.class);
+                    startActivity(intent);
                 }
         );
         return view;

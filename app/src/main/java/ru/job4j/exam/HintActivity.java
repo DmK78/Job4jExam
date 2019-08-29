@@ -30,8 +30,8 @@ public class HintActivity extends AppCompatActivity {
         textViewHint = findViewById(R.id.textViewHint);
         textViewQuestion = findViewById(R.id.textViewQuestion);
         Intent intent = getIntent();
-        int questionId = intent.getIntExtra(ExamActivity.HINT_FOR, 0);
-        String question = intent.getStringExtra(ExamActivity.QUESTION);
+        int questionId = intent.getIntExtra(ExamActivityFragment.HINT_FOR, 0);
+        String question = intent.getStringExtra(ExamActivityFragment.QUESTION);
         textViewQuestion.setText(question);
         textViewHint.setText(this.answers.get(questionId));
         buttonBack.setOnClickListener(
