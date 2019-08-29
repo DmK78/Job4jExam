@@ -107,8 +107,8 @@ public class ExamsCore {
                 } while (cursor.moveToNext());
 
             }
-
             cursor.close();
+            db.close();
         }
         return exams;
     }
@@ -152,6 +152,7 @@ public class ExamsCore {
             }
         }
         db.close();
+
         //currentExam = null;
 
     }
@@ -169,7 +170,7 @@ public class ExamsCore {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String currentDateandTime = sdf.format(new Date());
         //currentExam = (new Exam(currentExamTempName, "", String.valueOf((int) result+" %"), currentDateandTime, questions));
-        currentExam.setResult(String.valueOf((int) result+" %"));
+        currentExam.setResult(String.valueOf((int) result + " %"));
         currentExam.setDate(currentDateandTime);
 
 
@@ -186,13 +187,12 @@ public class ExamsCore {
 
     public List<Question> getNewQuestions() {
 
-        for(Question question:questions){
+        for (Question question : questions) {
             question.setAnswer(-1);
         }
 
 
         return questions;
-
 
 
     }
@@ -219,7 +219,7 @@ public class ExamsCore {
                 new ArrayList<>());
         cursorExam.close();
 
-        String selectionQuestion = ExamDbSchema.QuestionsTable.Cols.EXAM_ID + "=?";
+        String selectionQuestion = ExamDbSchema.QuestionsTable.Cols.EXAM_ID + " =?";
         String[] selectionArgsQuestion = new String[]{String.valueOf(id)};
 
         Cursor cursorQuestion = this.db.query(
@@ -262,13 +262,13 @@ public class ExamsCore {
                     } while (cursorOption.moveToNext());
 
                 }
-
+                cursorOption.close();
                 resultQuestions.add(question);
-
             } while (cursorQuestion.moveToNext());
         }
-        db.close();
+
         cursorQuestion.close();
+        db.close();
 
         result.setQuestions(resultQuestions);
         return result;
@@ -316,19 +316,21 @@ public class ExamsCore {
             for (Option option : question.getOptions()) {
                 ContentValues valueOption = new ContentValues();
                 valueOption.put(ExamDbSchema.OptionsTable.Cols.NAME, option.getText());
-                valueOption.put(ExamDbSchema.OptionsTable.Cols.QUESTION_ID, questionId);
+                valueOption.put(ExamDbSchema.OptionsTable.Cols.QUESTION_ID, question.getId());
                 long optionId = db.update(ExamDbSchema.OptionsTable.NAME, valueOption, "id =?",
                         new String[]{String.valueOf(option.getId())});
                 examUptading = false;
 
-               // exams.add(currentExam);
+                // exams.add(currentExam);
 
 
             }
         }
         exams.remove(currentExam);
+
+
+
         db.close();
-//        currentExam = null;
 
 
     }

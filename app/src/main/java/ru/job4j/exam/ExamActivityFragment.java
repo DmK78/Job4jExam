@@ -38,6 +38,7 @@ public class ExamActivityFragment extends Fragment implements ConfirmHintDialogF
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_main, container, false);
         if (examsCore.examUptading) {
             //getfromDB
             //String tempName = examsCore.getCurrentExam().getName();
@@ -48,7 +49,7 @@ public class ExamActivityFragment extends Fragment implements ConfirmHintDialogF
             examsCore.setCurrentExam(new Exam(examsCore.getCurrentExamTempName(), "", "", "", examsCore.getNewQuestions()));
             currentExam=examsCore.getCurrentExam();
         }
-        View view = inflater.inflate(R.layout.activity_main, container, false);
+
         position = 0;
         radioGroupVariants = view.findViewById(R.id.RadioGroupVariants);
         buttonNext = view.findViewById(R.id.buttonNext);

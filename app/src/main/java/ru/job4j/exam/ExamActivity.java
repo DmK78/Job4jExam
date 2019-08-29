@@ -19,7 +19,7 @@ public class ExamActivity extends AppCompatActivity {
         if (fragment == null) {
             fragment = new ExamActivityFragment();
             manager.beginTransaction()
-                    .add(R.id.list, fragment)
+                    .add(R.id.fragmentExam, fragment)
                     .commit();
         }
     }

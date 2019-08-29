@@ -15,11 +15,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exam_list);
         examsCore.init(getApplicationContext());
         Fragment fragment = manager.findFragmentById(R.id.list);
-        if (fragment == null) {
+        //if (fragment == null) {
             fragment = new ExamListFragment();
             manager.beginTransaction()
                     .add(R.id.list, fragment)
                     .commit();
-        }
+        //}
     }
 }

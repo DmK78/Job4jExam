@@ -34,6 +34,7 @@ ExamsCore examsCore = ExamsCore.getInstance();
 
                     examsCore.examUptading=true;
                     examsCore.setCurrentExamTempName(edit.getText().toString());
+
                     //examsCore.getCurrentExam().setName(edit.getText().toString());
                     Intent intent = new Intent(getContext(),ExamActivity.class);
                     startActivity(intent);
