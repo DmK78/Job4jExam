@@ -27,12 +27,13 @@ ExamsCore examsCore = ExamsCore.getInstance();
         this.store = new ExamBaseHelper(this.getContext()).getWritableDatabase();
         //Bundle args = getArguments();
         final EditText edit = view.findViewById(R.id.title);
-        edit.setText(examsCore.getCurrentExam().getName());
+        edit.setText(examsCore.getCurrentExamTempName());
         Button save = view.findViewById(R.id.save);
         save.setOnClickListener(
                 btn -> {
 
                     examsCore.examUptading=true;
+                    examsCore.setCurrentExamTempName(edit.getText().toString());
                     //examsCore.getCurrentExam().setName(edit.getText().toString());
                     Intent intent = new Intent(getContext(),ExamActivity.class);
                     startActivity(intent);

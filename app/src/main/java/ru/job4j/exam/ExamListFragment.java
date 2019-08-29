@@ -97,7 +97,8 @@ public class ExamListFragment extends Fragment {
             holder.view.findViewById(R.id.edit)
                     .setOnClickListener(
                             btn -> {
-                                examsCore.setCurrentExam(exam);
+                                examsCore.setCurrentExamTempName(exam.getName());
+                                examsCore.setCurrentExamTempId(exam.getId());
                                 FragmentManager fm = getActivity().getSupportFragmentManager();
                                 Fragment fragment = new ExamUpdateFragment();
                                 fm.beginTransaction()

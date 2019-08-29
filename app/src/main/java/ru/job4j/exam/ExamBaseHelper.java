@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ExamBaseHelper extends SQLiteOpenHelper {
     public static final String DB = "exams.db";
-    public static final int VERSION = 15;
+    public static final int VERSION = 20;
 
     public ExamBaseHelper(Context context) {
         super(context, DB, null, VERSION);
@@ -17,7 +17,6 @@ public class ExamBaseHelper extends SQLiteOpenHelper {
         db.execSQL(ExamDbSchema.ExamTable.CREATE_TABLE);
         db.execSQL(ExamDbSchema.QuestionsTable.CREATE_TABLE);
         db.execSQL(ExamDbSchema.OptionsTable.CREATE_TABLE);
-        db.execSQL(ExamDbSchema.AnswersTable.CREATE_TABLE);
 
     }
 
@@ -26,7 +25,6 @@ public class ExamBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + ExamDbSchema.ExamTable.NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ExamDbSchema.QuestionsTable.NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ExamDbSchema.OptionsTable.NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + ExamDbSchema.AnswersTable.NAME);
         onCreate(db);
     }
 }

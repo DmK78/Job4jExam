@@ -49,7 +49,7 @@ public class ResultActivity extends AppCompatActivity {
     public void saveExam(View view) {
 
         if(examsCore.examUptading){
-
+examsCore.getCurrentExam().setName(examsCore.getCurrentExamTempName());
             examsCore.updateExamToDb();
 
         }else {

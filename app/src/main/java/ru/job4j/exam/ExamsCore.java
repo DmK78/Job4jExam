@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Path;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,7 +22,8 @@ public class ExamsCore {
     private SQLiteDatabase db;
     private Context context;
     private Exam currentExam;
-    private String currentExamName;
+    private String currentExamTempName;
+    private int currentExamTempId;
     private final List<Question> questions = Arrays.asList(
             new Question(
                     "How many primitive variables does Java have?",
@@ -168,7 +168,9 @@ public class ExamsCore {
         //percent = (float) rightAnswers / (float) answersSum * 100;
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String currentDateandTime = sdf.format(new Date());
-        currentExam = (new Exam(currentExamName, "", String.valueOf((int) result+" %"), currentDateandTime, questions));
+        //currentExam = (new Exam(currentExamTempName, "", String.valueOf((int) result+" %"), currentDateandTime, questions));
+        currentExam.setResult(String.valueOf((int) result+" %"));
+        currentExam.setDate(currentDateandTime);
 
 
     }
@@ -272,12 +274,12 @@ public class ExamsCore {
         return result;
     }
 
-    public void setCurrentExamName(String currentExamName) {
-        this.currentExamName = currentExamName;
+    public void setCurrentExamTempName(String currentExamTempName) {
+        this.currentExamTempName = currentExamTempName;
     }
 
-    public String getCurrentExamName() {
-        return currentExamName;
+    public String getCurrentExamTempName() {
+        return currentExamTempName;
     }
 
     public void setCurrentExamId(int id) {
@@ -318,17 +320,24 @@ public class ExamsCore {
                 long optionId = db.update(ExamDbSchema.OptionsTable.NAME, valueOption, "id =?",
                         new String[]{String.valueOf(option.getId())});
                 examUptading = false;
-                exams.remove(currentExam);
-                exams.add(currentExam);
+
+               // exams.add(currentExam);
 
 
             }
         }
+        exams.remove(currentExam);
         db.close();
-        currentExam = null;
+//        currentExam = null;
 
 
     }
 
+    public int getCurrentExamTempId() {
+        return currentExamTempId;
+    }
 
+    public void setCurrentExamTempId(int currentExamTempId) {
+        this.currentExamTempId = currentExamTempId;
+    }
 }

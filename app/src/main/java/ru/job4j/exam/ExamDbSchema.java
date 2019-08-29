@@ -58,19 +58,4 @@ public class ExamDbSchema {
         }
     }
 
-    public static final class AnswersTable {
-        public static final String NAME = "answers";
-
-        public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " +
-                AnswersTable.NAME + " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                Cols.OPTION_ID + " INTEGER, " +
-                Cols.QUESTION_ID + " INTEGER, " +
-                Cols.EXAM_ID + " INTEGER" + ")";
-
-        public static final class Cols {
-            public static final String OPTION_ID = "option_id";
-            public static final String QUESTION_ID = "question_id";
-            public static final String EXAM_ID = "exam_id";
-        }
-    }
 }

@@ -1,21 +1,15 @@
 package ru.job4j.exam;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ExamAddFragment extends Fragment {
 public static final String EXAM_NAME = "examName";
@@ -32,7 +26,7 @@ public static final String EXAM_NAME = "examName";
         save.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        examsCore.setCurrentExamName(edit.getText().toString());
+                                        examsCore.setCurrentExamTempName(edit.getText().toString());
                                         Intent intent = new Intent(getContext(), ExamActivity.class);
                                         startActivity(intent);
                                     }

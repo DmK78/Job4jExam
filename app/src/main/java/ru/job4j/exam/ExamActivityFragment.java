@@ -40,10 +40,13 @@ public class ExamActivityFragment extends Fragment implements ConfirmHintDialogF
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (examsCore.examUptading) {
             //getfromDB
-            currentExam = examsCore.getExamFromDb(examsCore.getCurrentExam().getId());
+            //String tempName = examsCore.getCurrentExam().getName();
+            examsCore.setCurrentExam(examsCore.getExamFromDb(examsCore.getCurrentExamTempId()));
+            currentExam=examsCore.getCurrentExam();
 
         } else {
-            currentExam = new Exam(examsCore.getCurrentExamName(), "", "", "", examsCore.getNewQuestions());
+            examsCore.setCurrentExam(new Exam(examsCore.getCurrentExamTempName(), "", "", "", examsCore.getNewQuestions()));
+            currentExam=examsCore.getCurrentExam();
         }
         View view = inflater.inflate(R.layout.activity_main, container, false);
         position = 0;
@@ -71,7 +74,7 @@ public class ExamActivityFragment extends Fragment implements ConfirmHintDialogF
                 } else {
                     currentExam.getQuestions().get(position).setAnswer(id - 1);
                     if (position == currentExam.getQuestions().size() - 1) {
-                        examsCore.setCurrentExam(currentExam);
+                        //examsCore.setCurrentExam(currentExam);
                         Intent intent = new Intent(getContext(), ResultActivity.class);
                         startActivity(intent);
                     } else {
