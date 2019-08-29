@@ -83,6 +83,7 @@ public class ExamsCore {
 
     public List<Exam> loadExamsFromDb() {
 
+        exams.clear();
         if (exams.size() == 0) {
             this.db = new ExamBaseHelper(context).getReadableDatabase();
             Cursor cursor = this.db.query(
@@ -326,7 +327,7 @@ public class ExamsCore {
 
             }
         }
-        exams.remove(currentExam);
+        //exams.remove(currentExam);
 
 
 

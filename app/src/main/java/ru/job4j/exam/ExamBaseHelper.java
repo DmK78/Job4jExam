@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ExamBaseHelper extends SQLiteOpenHelper {
     public static final String DB = "exams.db";
-    public static final int VERSION = 23;
+    public static final int VERSION = 24;
 
     public ExamBaseHelper(Context context) {
         super(context, DB, null, VERSION);

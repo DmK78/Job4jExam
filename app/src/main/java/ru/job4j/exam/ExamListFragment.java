@@ -27,6 +27,7 @@ public class ExamListFragment extends Fragment {
     private RecyclerView recycler;
     private SQLiteDatabase store;
     private ExamsCore examsCore = ExamsCore.getInstance();
+    private ExamAdapter adapter;
     private List<Exam> exams;
 
     @Nullable
@@ -37,7 +38,9 @@ public class ExamListFragment extends Fragment {
         exams = examsCore.loadExamsFromDb();
         this.recycler = view.findViewById(R.id.examsRecyclerView);
         this.recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        this.recycler.setAdapter(new ExamAdapter(getContext(), exams));
+        adapter = new ExamAdapter(getContext(),exams);
+        this.recycler.setAdapter(adapter);
+
 
         return view;
     }
