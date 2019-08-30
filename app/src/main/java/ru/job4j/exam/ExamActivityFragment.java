@@ -61,18 +61,15 @@ public class ExamActivityFragment extends Fragment implements ConfirmHintDialogF
             public void onClick(View v) {
 
                 //int id = radioGroupVariants.getCheckedRadioButtonId();
-
-                int radioButtonID = radioGroupVariants.getCheckedRadioButtonId();
-                View radioButton = radioGroupVariants.findViewById(radioButtonID);
-                int idx = radioGroupVariants.indexOfChild(radioButton);
-
-                RadioButton r = (RadioButton)radioGroupVariants.getChildAt(idx);
-                String s = r.getTag().toString();
-                int id=Integer.valueOf(s);
-
-                if (id == -1) {
+               int radioButtonID = radioGroupVariants.getCheckedRadioButtonId();
+                if (radioButtonID <0) {
                     Toast.makeText(getContext(), "Choose the answer", Toast.LENGTH_SHORT).show();
                 } else {
+                    View radioButton = radioGroupVariants.findViewById(radioButtonID);
+                    int idx = radioGroupVariants.indexOfChild(radioButton);
+                    RadioButton r = (RadioButton)radioGroupVariants.getChildAt(idx);
+                    String s = r.getTag().toString();
+                    int id=Integer.valueOf(s);
                     currentExam.getQuestions().get(position).setAnswer(id - 1);
                     if (position == currentExam.getQuestions().size() - 1) {
                         //examsCore.setCurrentExam(currentExam);

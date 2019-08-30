@@ -308,7 +308,7 @@ public class ExamsCore {
             ContentValues valueQuestion = new ContentValues();
             valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.NAME, question.getName());
             valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.DESC, question.getDesc());
-            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.EXAM_ID, examId);
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.EXAM_ID, currentExam.getId());
             valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.ANSWER_ID, question.getAnswer());
             valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.POSITION, question.getPosition());
             valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.RIGHT_ANSWER, question.getRigthAnswer());
