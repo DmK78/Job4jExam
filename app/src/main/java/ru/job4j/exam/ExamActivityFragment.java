@@ -19,7 +19,7 @@ import ru.job4j.exam.Data.Exam;
 import ru.job4j.exam.Data.Option;
 import ru.job4j.exam.Data.Question;
 
-public class ExamActivityFragment extends Fragment implements ConfirmHintDialogFragment.ConfirmHintDialogListener {
+public class ExamActivityFragment extends Fragment  {
 
     public static final String HINT_FOR = "hint_for";
     public static final String QUESTION = "question";
@@ -32,6 +32,7 @@ public class ExamActivityFragment extends Fragment implements ConfirmHintDialogF
     private Button buttonPrew;
     private TextView textViewQuestion;
     private boolean readOnly = false;
+    private int currentQuestionPosition;
     private ExamsCore examsCore = ExamsCore.getInstance();
     //List<Question> questions;
 
@@ -107,6 +108,7 @@ public class ExamActivityFragment extends Fragment implements ConfirmHintDialogF
         //buttonNext.setEnabled(position <= questions.size() - 1 && readOnly);
         radioGroupVariants.clearCheck();
         Question question = currentExam.getQuestions().get(position);
+        examsCore.setCurrentQuestionPosition(position);
         textViewQuestion.setText(question.getName());
         for (int index = 0; index != radioGroupVariants.getChildCount(); index++) {
             RadioButton button = (RadioButton) radioGroupVariants.getChildAt(index);
@@ -119,17 +121,5 @@ public class ExamActivityFragment extends Fragment implements ConfirmHintDialogF
         }
     }
 
-    @Override
-    public void onPositiveHintDialogClick(DialogFragment dialog) {
-        // Intent intent = new Intent(getApplicationContext(), HintActivity.class);
-        // intent.putExtra(HINT_FOR, position);
-        // intent.putExtra(QUESTION, ExamActivityFragment.this.questions.get(position).getText());
-        //  startActivity(intent);
-    }
 
-    @Override
-    public void onNegativeHintDialogClick(DialogFragment dialog) {
-        // Toast.makeText(this, "Молодец!!!", Toast.LENGTH_SHORT).show();
-
-    }
 }

@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 public class ConfirmHintDialogFragment extends DialogFragment {
     private ConfirmHintDialogListener callback;
 
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = new AlertDialog.Builder(getActivity())

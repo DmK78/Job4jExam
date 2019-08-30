@@ -1,11 +1,13 @@
 package ru.job4j.exam;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,7 +29,7 @@ public class ExamListFragment extends Fragment {
     private RecyclerView recycler;
     private SQLiteDatabase store;
     private ExamsCore examsCore = ExamsCore.getInstance();
-    private ExamAdapter adapter;
+    public static ExamAdapter adapter;
     private List<Exam> exams;
 
     @Nullable
@@ -48,14 +50,14 @@ public class ExamListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.exams, menu);
+        inflater.inflate(R.menu.activity_exams, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.add_exam:
+            case R.id.add_item:
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 fm.beginTransaction()
                         .replace(R.id.list, new ExamAddFragment())
@@ -63,9 +65,15 @@ public class ExamListFragment extends Fragment {
                         .commit();
 
                 return true;
+            case R.id.delete_item:
+                DialogFragment dialog = new ConfirmDeleteAllItemsDialog();
+                dialog.show(getFragmentManager(), "dialog_tag");
+
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+
     }
 
     public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamHolder> {

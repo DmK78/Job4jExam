@@ -4,14 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Path;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
 import ru.job4j.exam.Data.Exam;
 import ru.job4j.exam.Data.Option;
 import ru.job4j.exam.Data.Question;
@@ -23,6 +20,7 @@ public class ExamsCore {
     private SQLiteDatabase db;
     private Context context;
     private Exam currentExam;
+    private int currentQuestionPosition;
     private String currentExamTempName;
     private int currentExamTempId;
     private final List<Question> questions = Arrays.asList(
@@ -35,7 +33,7 @@ public class ExamsCore {
                             new Option(2, "1.2"),
                             new Option(3, "1.3"), new Option(4, "1.4")
                     ),
-                    1, 4
+                    0, 4
             ),
             new Question(
                     "What is Java Virtual Machine?",
@@ -46,7 +44,7 @@ public class ExamsCore {
                             new Option(2, "2.2"),
                             new Option(3, "2.3"),
                             new Option(4, "2.4")
-                    ), 2, 4
+                    ), 1, 4
             ),
             new Question(
                     "What is happen if we try unboxing null?",
@@ -54,7 +52,7 @@ public class ExamsCore {
                     Arrays.asList(
                             new Option(1, "3.1"), new Option(2, "3.2"),
                             new Option(3, "3.3"), new Option(4, "3.4")
-                    ), 3, 4
+                    ), 2, 4
             )
     );
 
@@ -71,10 +69,6 @@ public class ExamsCore {
 
     public void init(Context context) {
         this.context = context;
-
-        //initQuestions();
-
-
     }
 
 
@@ -83,19 +77,15 @@ public class ExamsCore {
     }
 
     public List<Exam> loadExamsFromDb() {
-
         exams.clear();
-        if (exams.size() == 0) {
             this.db = new ExamBaseHelper(context).getReadableDatabase();
             Cursor cursor = this.db.query(
                     ExamDbSchema.ExamTable.NAME,
                     null, null, null,
                     null, null, null
             );
-
             if (cursor.moveToFirst()) {
                 do {
-
                     exams.add(new Exam(
                             cursor.getInt(cursor.getColumnIndex("id")),
                             cursor.getString(cursor.getColumnIndex("title")),
@@ -104,17 +94,12 @@ public class ExamsCore {
                             cursor.getString(cursor.getColumnIndex("date")),
                             new ArrayList<>()
                     ));
-
-
                 } while (cursor.moveToNext());
-
             }
             cursor.close();
             db.close();
-        }
         return exams;
     }
-
 
     public void saveExamToDb() {
         exams.add(currentExam);
@@ -128,7 +113,6 @@ public class ExamsCore {
         valueExam.put(ExamDbSchema.ExamTable.Cols.DESC, currentExam.getDesc());
         valueExam.put(ExamDbSchema.ExamTable.Cols.RESULT, currentExam.getResult());
         valueExam.put(ExamDbSchema.ExamTable.Cols.DATE, currentExam.getDate());
-
         examId = db.insert(ExamDbSchema.ExamTable.NAME, null, valueExam);
 
         for (Question question : currentExam.getQuestions()) {
@@ -139,71 +123,51 @@ public class ExamsCore {
             valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.ANSWER_ID, question.getAnswer());
             valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.POSITION, question.getPosition());
             valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.RIGHT_ANSWER, question.getRigthAnswer());
-
             questionId = db.insert(ExamDbSchema.QuestionsTable.NAME, null, valueQuestion);
-
 
             for (Option option : question.getOptions()) {
                 ContentValues valueOption = new ContentValues();
                 valueOption.put(ExamDbSchema.OptionsTable.Cols.NAME, option.getText());
                 valueOption.put(ExamDbSchema.OptionsTable.Cols.QUESTION_ID, questionId);
-
                 optionId = db.insert(ExamDbSchema.OptionsTable.NAME, null, valueOption);
-
-
             }
         }
         db.close();
-
-        //currentExam = null;
-
     }
 
     public void countResult() {
         int rightAnswers = 0;
-
         for (Question question : currentExam.getQuestions()) {
             if (question.getRigthAnswer() == question.getAnswer() + 1) {
                 rightAnswers++;
             }
         }
         float result = (float) rightAnswers / (float) questions.size() * 100;
-        //percent = (float) rightAnswers / (float) answersSum * 100;
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String currentDateandTime = sdf.format(new Date());
-        //currentExam = (new Exam(currentExamTempName, "", String.valueOf((int) result+" %"), currentDateandTime, questions));
         currentExam.setResult(String.valueOf((int) result + " %"));
         currentExam.setDate(currentDateandTime);
-
-
     }
 
     public Exam getCurrentExam() {
         return currentExam;
     }
 
-
     public void setCurrentExam(Exam currentExam) {
         this.currentExam = currentExam;
     }
 
     public List<Question> getNewQuestions() {
-
         for (Question question : questions) {
             question.setAnswer(-1);
         }
-
-
         return questions;
-
-
     }
 
     public Exam getExamFromDb(int id) {
         Exam result;
         List<Question> resultQuestions = new ArrayList<>();
         this.db = new ExamBaseHelper(context.getApplicationContext()).getReadableDatabase();
-
         String selectionExam = "id =?";
         String[] selectionArgsExam = new String[]{String.valueOf(id)};
         Cursor cursorExam = this.db.query(
@@ -229,11 +193,8 @@ public class ExamsCore {
                 null, selectionQuestion, selectionArgsQuestion,
                 null, null, null
         );
-
         if (cursorQuestion.moveToFirst()) {
             do {
-                // get  the  data into array,or class variable
-
                 Question question = new Question(
                         cursorQuestion.getInt(cursorQuestion.getColumnIndex("id")),
                         cursorQuestion.getString(cursorQuestion.getColumnIndex(ExamDbSchema.QuestionsTable.Cols.NAME)),
@@ -259,7 +220,6 @@ public class ExamsCore {
                                 cursorOption.getString(cursorOption.getColumnIndex(ExamDbSchema.OptionsTable.Cols.NAME))
                         );
                         question.addOption(option);
-
 
                     } while (cursorOption.moveToNext());
 
@@ -322,18 +282,9 @@ public class ExamsCore {
                 long optionId = db.update(ExamDbSchema.OptionsTable.NAME, valueOption, "id =?",
                         new String[]{String.valueOf(option.getId())});
                 examUptading = false;
-
-                // exams.add(currentExam);
-
-
             }
         }
-        //exams.remove(currentExam);
-
-
         db.close();
-
-
     }
 
     public int getCurrentExamTempId() {
@@ -356,5 +307,48 @@ public class ExamsCore {
             }
         }
         db.close();
+    }
+
+    public int getCurrentQuestionPosition() {
+        return currentQuestionPosition;
+    }
+
+    public void setCurrentQuestionPosition(int currentQuestionPosition) {
+        this.currentQuestionPosition = currentQuestionPosition;
+    }
+
+    public boolean deleteAllExamsFromDb(){
+        boolean result=false;
+        db = new ExamBaseHelper(context).getWritableDatabase();
+        db.execSQL("delete from "+ ExamDbSchema.ExamTable.NAME);
+        db.execSQL("delete from "+ ExamDbSchema.QuestionsTable.NAME);
+        db.execSQL("delete from "+ ExamDbSchema.OptionsTable.NAME);
+        db.close();
+        db = new ExamBaseHelper(context).getReadableDatabase();
+        Cursor cursor = this.db.query(
+                ExamDbSchema.ExamTable.NAME,
+                null, null, null,
+                null, null, null
+        );
+        if(!cursor.moveToFirst()){
+            cursor = this.db.query(
+                    ExamDbSchema.QuestionsTable.NAME,
+                    null, null, null,
+                    null, null, null
+            );
+            if (!cursor.moveToFirst()){
+                cursor = this.db.query(
+                        ExamDbSchema.OptionsTable.NAME,
+                        null, null, null,
+                        null, null, null
+                );
+                if(!cursor.moveToFirst()){
+                    result= true;
+                    exams.clear();
+                    ExamListFragment.adapter.notifyDataSetChanged();
+                }
+            }
+        }
+return result;
     }
 }
