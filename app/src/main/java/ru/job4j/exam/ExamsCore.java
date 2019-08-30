@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Path;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -330,7 +331,6 @@ public class ExamsCore {
         //exams.remove(currentExam);
 
 
-
         db.close();
 
 
@@ -342,5 +342,19 @@ public class ExamsCore {
 
     public void setCurrentExamTempId(int currentExamTempId) {
         this.currentExamTempId = currentExamTempId;
+    }
+
+    public void deleteExamFromDB(Exam exam) {
+        this.db = new ExamBaseHelper(context).getWritableDatabase();
+        exam = getExamFromDb(exam.getId());
+        db = new ExamBaseHelper(context).getWritableDatabase();
+        db.delete(ExamDbSchema.ExamTable.NAME, "id = ?", new String[]{String.valueOf(exam.getId())});
+        for (Question question : exam.getQuestions()) {
+            db.delete(ExamDbSchema.QuestionsTable.NAME, "id = ?", new String[]{String.valueOf(question.getId())});
+            for (Option option : question.getOptions()) {
+                db.delete(ExamDbSchema.OptionsTable.NAME, "id = ?", new String[]{String.valueOf(option.getId())});
+            }
+        }
+        db.close();
     }
 }

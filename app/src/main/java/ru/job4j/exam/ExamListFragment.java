@@ -38,7 +38,7 @@ public class ExamListFragment extends Fragment {
         exams = examsCore.loadExamsFromDb();
         this.recycler = view.findViewById(R.id.examsRecyclerView);
         this.recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ExamAdapter(getContext(),exams);
+        adapter = new ExamAdapter(getContext(), exams);
         this.recycler.setAdapter(adapter);
 
 
@@ -115,8 +115,8 @@ public class ExamListFragment extends Fragment {
             holder.view.findViewById(R.id.delete)
                     .setOnClickListener(
                             btn -> {
-                                store = new ExamBaseHelper(getContext()).getWritableDatabase();
-                                store.delete(ExamDbSchema.ExamTable.NAME, "id = ?", new String[]{String.valueOf(exam.getId())});
+
+                                examsCore.deleteExamFromDB(exam);
                                 exams.remove(exam);
                                 //notifyItemRemoved(i);
                                 notifyDataSetChanged();
