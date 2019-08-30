@@ -60,7 +60,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onClickPrev"
             android:text="@string/buttonBack" />
 
         <Button
@@ -69,7 +68,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onClickHint"
             android:text="Подсказка" />
 
         <Button
@@ -78,7 +76,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onClickNext"
             android:text="@string/buttonForward" />
     </LinearLayout>
 </LinearLayout>
