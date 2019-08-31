@@ -24,7 +24,7 @@ ExamsCore examsCore = ExamsCore.getInstance();
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.exam_update, container, false);
-        this.store = new ExamBaseHelper(this.getContext()).getWritableDatabase();
+        //this.store = new ExamBaseHelper(this.getContext()).getWritableDatabase();
         //Bundle args = getArguments();
         final EditText edit = view.findViewById(R.id.title);
         edit.setText(examsCore.getCurrentExamTempName());

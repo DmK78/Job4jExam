@@ -16,16 +16,17 @@ public class ConfirmDeleteAllItemsDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog = new AlertDialog.Builder(getActivity())
                 .setMessage("Удалить все записи?")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        callback.onPositiveDelItemsDialogClick(ConfirmDeleteAllItemsDialog.this);
-                    }
-                })
+
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         callback.onNegativeDelItemsDialogClick(ConfirmDeleteAllItemsDialog.this);
+                    }
+                })
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        callback.onPositiveDelItemsDialogClick(ConfirmDeleteAllItemsDialog.this);
                     }
                 })
                 .create();

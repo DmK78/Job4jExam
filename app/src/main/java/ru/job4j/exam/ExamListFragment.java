@@ -66,9 +66,10 @@ public class ExamListFragment extends Fragment {
 
                 return true;
             case R.id.delete_item:
-                DialogFragment dialog = new ConfirmDeleteAllItemsDialog();
-                dialog.show(getFragmentManager(), "dialog_tag");
-
+                if(exams.size()>0){
+                    DialogFragment dialog = new ConfirmDeleteAllItemsDialog();
+                    dialog.show(getFragmentManager(), "dialog_tag");
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

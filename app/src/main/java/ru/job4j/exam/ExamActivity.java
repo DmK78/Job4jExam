@@ -26,7 +26,6 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
         }
     }
 
-
     @Override
     public void onPositiveHintDialogClick(DialogFragment dialog) {
         Intent intent = new Intent(getApplicationContext(), HintActivity.class);
@@ -38,6 +37,5 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
     @Override
     public void onNegativeHintDialogClick(DialogFragment dialog) {
         Toast.makeText(getApplicationContext(), "Молодец!!!", Toast.LENGTH_SHORT).show();
-
     }
 }

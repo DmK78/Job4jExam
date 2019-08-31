@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteAllI
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_exam_list);
+        ExamBaseHelper databaseHelper = ExamBaseHelper.getInstance(this);
         examsCore.init(getApplicationContext());
         Fragment fragment = manager.findFragmentById(R.id.list);
         //if (fragment == null) {

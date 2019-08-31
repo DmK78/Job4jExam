@@ -22,6 +22,8 @@ public class ExamsCore {
     private Exam currentExam;
     private int currentQuestionPosition;
     private String currentExamTempName;
+    private ExamBaseHelper databaseHelper;
+
     private int currentExamTempId;
     private final List<Question> questions = Arrays.asList(
             new Question(
@@ -69,7 +71,9 @@ public class ExamsCore {
 
     public void init(Context context) {
         this.context = context;
+        databaseHelper = ExamBaseHelper.getInstance(context);
     }
+
 
 
     public List<Exam> getAllExams() {
@@ -78,7 +82,8 @@ public class ExamsCore {
 
     public List<Exam> loadExamsFromDb() {
         exams.clear();
-            this.db = new ExamBaseHelper(context).getReadableDatabase();
+        List<Exam> result = databaseHelper.getAllExamsNames();
+            /*this.db = new ExamBaseHelper(context).getReadableDatabase();
             Cursor cursor = this.db.query(
                     ExamDbSchema.ExamTable.NAME,
                     null, null, null,
@@ -97,7 +102,7 @@ public class ExamsCore {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-            db.close();
+            db.close();*/
         return exams;
     }
 
@@ -107,7 +112,7 @@ public class ExamsCore {
         long examId;
         long optionId;
 
-        this.db = new ExamBaseHelper(context).getWritableDatabase();
+      /*  this.db = new ExamBaseHelper(context).getWritableDatabase();
         ContentValues valueExam = new ContentValues();
         valueExam.put(ExamDbSchema.ExamTable.Cols.TITLE, currentExam.getName());
         valueExam.put(ExamDbSchema.ExamTable.Cols.DESC, currentExam.getDesc());
@@ -132,7 +137,7 @@ public class ExamsCore {
                 optionId = db.insert(ExamDbSchema.OptionsTable.NAME, null, valueOption);
             }
         }
-        db.close();
+        db.close();*/
     }
 
     public void countResult() {
@@ -165,9 +170,9 @@ public class ExamsCore {
     }
 
     public Exam getExamFromDb(int id) {
-        Exam result;
+        Exam result=null;
         List<Question> resultQuestions = new ArrayList<>();
-        this.db = new ExamBaseHelper(context.getApplicationContext()).getReadableDatabase();
+     /*   this.db = new ExamBaseHelper(context.getApplicationContext()).getReadableDatabase();
         String selectionExam = "id =?";
         String[] selectionArgsExam = new String[]{String.valueOf(id)};
         Cursor cursorExam = this.db.query(
@@ -230,9 +235,9 @@ public class ExamsCore {
         }
 
         cursorQuestion.close();
-        db.close();
+        db.close();*/
 
-        result.setQuestions(resultQuestions);
+       // result.setQuestions(resultQuestions);
         return result;
     }
 
@@ -256,7 +261,7 @@ public class ExamsCore {
         long questionId;
         long examId;
 
-        this.db = new ExamBaseHelper(context).getWritableDatabase();
+      /*  this.db = new ExamBaseHelper(context).getWritableDatabase();
         ContentValues valueExam = new ContentValues();
         valueExam.put(ExamDbSchema.ExamTable.Cols.TITLE, currentExam.getName());
         valueExam.put(ExamDbSchema.ExamTable.Cols.DESC, currentExam.getDesc());
@@ -284,7 +289,7 @@ public class ExamsCore {
                 examUptading = false;
             }
         }
-        db.close();
+        db.close();*/
     }
 
     public int getCurrentExamTempId() {
@@ -296,7 +301,7 @@ public class ExamsCore {
     }
 
     public void deleteExamFromDB(Exam exam) {
-        this.db = new ExamBaseHelper(context).getWritableDatabase();
+       /* this.db = new ExamBaseHelper(context).getWritableDatabase();
         exam = getExamFromDb(exam.getId());
         db = new ExamBaseHelper(context).getWritableDatabase();
         db.delete(ExamDbSchema.ExamTable.NAME, "id = ?", new String[]{String.valueOf(exam.getId())});
@@ -306,7 +311,7 @@ public class ExamsCore {
                 db.delete(ExamDbSchema.OptionsTable.NAME, "id = ?", new String[]{String.valueOf(option.getId())});
             }
         }
-        db.close();
+        db.close();*/
     }
 
     public int getCurrentQuestionPosition() {
@@ -319,7 +324,7 @@ public class ExamsCore {
 
     public boolean deleteAllExamsFromDb(){
         boolean result=false;
-        db = new ExamBaseHelper(context).getWritableDatabase();
+    /*    db = new ExamBaseHelper(context).getWritableDatabase();
         db.execSQL("delete from "+ ExamDbSchema.ExamTable.NAME);
         db.execSQL("delete from "+ ExamDbSchema.QuestionsTable.NAME);
         db.execSQL("delete from "+ ExamDbSchema.OptionsTable.NAME);
@@ -348,7 +353,7 @@ public class ExamsCore {
                     ExamListFragment.adapter.notifyDataSetChanged();
                 }
             }
-        }
+        }*/
 return result;
     }
 }
