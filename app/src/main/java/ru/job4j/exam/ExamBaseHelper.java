@@ -5,12 +5,27 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class ExamBaseHelper extends SQLiteOpenHelper {
+    private static ExamBaseHelper instance;
     public static final String DB = "exams.db";
     public static final int VERSION = 32;
 
-    public ExamBaseHelper(Context context) {
+    private ExamBaseHelper(Context context) {
         super(context, DB, null, VERSION);
     }
+
+    public static ExamBaseHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new ExamBaseHelper(context);
+        }
+        return instance;
+    }
+
+
+
+
+
+
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
