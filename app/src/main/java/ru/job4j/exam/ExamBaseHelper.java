@@ -1,22 +1,25 @@
 package ru.job4j.exam;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.job4j.exam.Data.Exam;
+import ru.job4j.exam.Data.Option;
+import ru.job4j.exam.Data.Question;
 
 import static android.content.ContentValues.TAG;
 
 public class ExamBaseHelper extends SQLiteOpenHelper {
     private static ExamBaseHelper instance;
+
     public static final String DB = "exams.db";
-    public static final int VERSION = 32;
+    public static final int VERSION = 33;
 
     public static ExamBaseHelper getInstance(Context context) {
         if (instance == null) {
@@ -45,14 +48,14 @@ public class ExamBaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Exam> getAllExamsNames() {
-        List <Exam> result = new ArrayList<>();
-        SQLiteDatabase db = getWritableDatabase();
+        List<Exam> result = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(
                 ExamDbSchema.ExamTable.NAME,
                 null, null, null,
                 null, null, null
         );
-        try{
+        if (cursor.moveToFirst()) {
             do {
                 result.add(new Exam(
                         cursor.getInt(cursor.getColumnIndex("id")),
@@ -63,16 +66,184 @@ public class ExamBaseHelper extends SQLiteOpenHelper {
                         new ArrayList<>()
                 ));
             } while (cursor.moveToNext());
-
-        }catch (Exception e) {
-            Log.d(TAG, "Error while trying to get posts from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
         }
+        db.close();
         return result;
     }
 
+    public void addExam(Exam exam) {
+        long questionId;
+        long examId;
+        long optionId;
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues valueExam = new ContentValues();
+        valueExam.put(ExamDbSchema.ExamTable.Cols.TITLE, exam.getName());
+        valueExam.put(ExamDbSchema.ExamTable.Cols.DESC, exam.getDesc());
+        valueExam.put(ExamDbSchema.ExamTable.Cols.RESULT, exam.getResult());
+        valueExam.put(ExamDbSchema.ExamTable.Cols.DATE, exam.getDate());
+        examId = db.insert(ExamDbSchema.ExamTable.NAME, null, valueExam);
+        for (Question question : exam.getQuestions()) {
+            ContentValues valueQuestion = new ContentValues();
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.NAME, question.getName());
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.DESC, question.getDesc());
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.EXAM_ID, examId);
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.ANSWER_ID, question.getAnswer());
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.POSITION, question.getPosition());
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.RIGHT_ANSWER, question.getRigthAnswer());
+            questionId = db.insert(ExamDbSchema.QuestionsTable.NAME, null, valueQuestion);
+            for (Option option : question.getOptions()) {
+                ContentValues valueOption = new ContentValues();
+                valueOption.put(ExamDbSchema.OptionsTable.Cols.NAME, option.getText());
+                valueOption.put(ExamDbSchema.OptionsTable.Cols.QUESTION_ID, questionId);
+                db.insert(ExamDbSchema.OptionsTable.NAME, null, valueOption);
+            }
+        }
+        db.close();
+    }
 
+
+    public Exam getExam(int id) {
+        Exam result = null;
+        List<Question> resultQuestions = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String selectionExam = "id =?";
+        String[] selectionArgsExam = new String[]{String.valueOf(id)};
+        Cursor cursorExam = db.query(
+                ExamDbSchema.ExamTable.NAME,
+                null, selectionExam, selectionArgsExam,
+                null, null, null
+        );
+        cursorExam.moveToFirst();
+        result = new Exam(
+                cursorExam.getInt(cursorExam.getColumnIndex("id")),
+                cursorExam.getString(cursorExam.getColumnIndex(ExamDbSchema.ExamTable.Cols.TITLE)),
+                cursorExam.getString(cursorExam.getColumnIndex(ExamDbSchema.ExamTable.Cols.DESC)),
+                cursorExam.getString(cursorExam.getColumnIndex(ExamDbSchema.ExamTable.Cols.RESULT)),
+                cursorExam.getString(cursorExam.getColumnIndex(ExamDbSchema.ExamTable.Cols.DATE)),
+                new ArrayList<>());
+        cursorExam.close();
+        String selectionQuestion = ExamDbSchema.QuestionsTable.Cols.EXAM_ID + " =?";
+        String[] selectionArgsQuestion = new String[]{String.valueOf(id)};
+        Cursor cursorQuestion = db.query(
+                ExamDbSchema.QuestionsTable.NAME,
+                null, selectionQuestion, selectionArgsQuestion,
+                null, null, null
+        );
+        if (cursorQuestion.moveToFirst()) {
+            do {
+                Question question = new Question(
+                        cursorQuestion.getInt(cursorQuestion.getColumnIndex("id")),
+                        cursorQuestion.getString(cursorQuestion.getColumnIndex(ExamDbSchema.QuestionsTable.Cols.NAME)),
+                        cursorQuestion.getString(cursorQuestion.getColumnIndex(ExamDbSchema.QuestionsTable.Cols.DESC)),
+                        cursorQuestion.getInt(cursorQuestion.getColumnIndex(ExamDbSchema.QuestionsTable.Cols.ANSWER_ID)),
+                        new ArrayList<Option>(),
+                        cursorQuestion.getInt(cursorQuestion.getColumnIndex(ExamDbSchema.QuestionsTable.Cols.POSITION)),
+                        cursorQuestion.getInt(cursorQuestion.getColumnIndex(ExamDbSchema.QuestionsTable.Cols.RIGHT_ANSWER)));
+
+                String selectionOption = ExamDbSchema.OptionsTable.Cols.QUESTION_ID + "=?";
+                String[] selectionArgsOption = new String[]{String.valueOf(question.getId())};
+
+                Cursor cursorOption = db.query(
+                        ExamDbSchema.OptionsTable.NAME,
+                        null, selectionOption, selectionArgsOption,
+                        null, null, null
+                );
+                if (cursorOption.moveToFirst()) {
+                    do {
+                        Option option = new Option(
+                                cursorOption.getInt(cursorOption.getColumnIndex("id")),
+                                cursorOption.getString(cursorOption.getColumnIndex(ExamDbSchema.OptionsTable.Cols.NAME))
+                        );
+                        question.addOption(option);
+
+                    } while (cursorOption.moveToNext());
+                }
+                cursorOption.close();
+                resultQuestions.add(question);
+            } while (cursorQuestion.moveToNext());
+        }
+        cursorQuestion.close();
+
+
+        db.close();
+        result.setQuestions(resultQuestions);
+        return result;
+
+    }
+
+    public void updateExam(Exam currentExam) {
+        long questionId;
+        long examId;
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues valueExam = new ContentValues();
+        valueExam.put(ExamDbSchema.ExamTable.Cols.TITLE, currentExam.getName());
+        valueExam.put(ExamDbSchema.ExamTable.Cols.DESC, currentExam.getDesc());
+        valueExam.put(ExamDbSchema.ExamTable.Cols.RESULT, currentExam.getResult());
+        valueExam.put(ExamDbSchema.ExamTable.Cols.DATE, currentExam.getDate());
+        examId = db.update(ExamDbSchema.ExamTable.NAME, valueExam, "id =?",
+                new String[]{String.valueOf(currentExam.getId())});
+        for (Question question : currentExam.getQuestions()) {
+            ContentValues valueQuestion = new ContentValues();
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.NAME, question.getName());
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.DESC, question.getDesc());
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.EXAM_ID, currentExam.getId());
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.ANSWER_ID, question.getAnswer());
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.POSITION, question.getPosition());
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.RIGHT_ANSWER, question.getRigthAnswer());
+            questionId = db.update(ExamDbSchema.QuestionsTable.NAME, valueQuestion, "id =?",
+                    new String[]{String.valueOf(question.getId())});
+        }
+        db.close();
+
+
+    }
+
+    public void deleteExam(Exam exam) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(ExamDbSchema.ExamTable.NAME, "id = ?", new String[]{String.valueOf(exam.getId())});
+        for (Question question : exam.getQuestions()) {
+            db.delete(ExamDbSchema.QuestionsTable.NAME, "id = ?", new String[]{String.valueOf(question.getId())});
+            for (Option option : question.getOptions()) {
+                db.delete(ExamDbSchema.OptionsTable.NAME, "id = ?", new String[]{String.valueOf(option.getId())});
+                db.setTransactionSuccessful();
+            }
+        }
+        db.close();
+    }
+
+    public boolean deleteAllExams() {
+        boolean result = false;
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.execSQL("delete from " + ExamDbSchema.ExamTable.NAME);
+        db.execSQL("delete from " + ExamDbSchema.QuestionsTable.NAME);
+        db.execSQL("delete from " + ExamDbSchema.OptionsTable.NAME);
+
+        db = getReadableDatabase();
+        Cursor cursor = db.query(
+                ExamDbSchema.ExamTable.NAME,
+                null, null, null,
+                null, null, null
+        );
+        if (!cursor.moveToFirst()) {
+            cursor = db.query(
+                    ExamDbSchema.QuestionsTable.NAME,
+                    null, null, null,
+                    null, null, null
+            );
+            if (!cursor.moveToFirst()) {
+                cursor = db.query(
+                        ExamDbSchema.OptionsTable.NAME,
+                        null, null, null,
+                        null, null, null
+                );
+                if (!cursor.moveToFirst()) {
+                    result = true;
+                    ExamListFragment.adapter.notifyDataSetChanged();
+                }
+            }
+        }
+        db.close();
+        return result;
+    }
 }

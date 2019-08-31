@@ -50,7 +50,7 @@ public class ResultActivity extends AppCompatActivity {
 
         if(examsCore.examUptading){
 examsCore.getCurrentExam().setName(examsCore.getCurrentExamTempName());
-            examsCore.updateExamToDb();
+            examsCore.updateCurrentExamToDb();
 
         }else {
 

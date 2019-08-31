@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements ConfirmDeleteAllI
     public void onPositiveDelItemsDialogClick(DialogFragment dialog) {
         if (examsCore.deleteAllExamsFromDb()) {
             Toast.makeText(getApplicationContext(), "All exams was deleted", Toast.LENGTH_SHORT).show();
+
         }
     }
 

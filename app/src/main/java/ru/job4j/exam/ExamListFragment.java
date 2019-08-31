@@ -125,8 +125,8 @@ public class ExamListFragment extends Fragment {
                     .setOnClickListener(
                             btn -> {
 
-                                examsCore.deleteExamFromDB(exam);
                                 exams.remove(exam);
+                                examsCore.deleteExamFromDB(exam);
                                 //notifyItemRemoved(i);
                                 notifyDataSetChanged();
                             }
