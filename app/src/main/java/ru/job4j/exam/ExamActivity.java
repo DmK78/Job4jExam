@@ -2,26 +2,44 @@ package ru.job4j.exam;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 import android.widget.Toast;
 
-public class ExamActivity extends AppCompatActivity implements ConfirmHintDialogFragment.ConfirmHintDialogListener {
+public class ExamActivity extends AppCompatActivity implements
+        ConfirmHintDialogFragment.ConfirmHintDialogListener, ExamSetNameFragment.OnSaveExamNameButtonClickListener {
     private final FragmentManager manager = getSupportFragmentManager();
     private ExamsCore examsCore = ExamsCore.getInstance();
+    private String examName;
+    private int examId;
+    private boolean examUpdating;
+    private Fragment setExamNameFragment;
+    private Fragment startExamFragment;
 
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_exam);
-        Fragment fragment = manager.findFragmentById(R.id.fragmentExam);
-        if (fragment == null) {
-            fragment = new ExamActivityFragment();
+
+        examUpdating = getIntent().getBooleanExtra(ExamListFragment.EXAM_UPDATING, false);
+        Bundle bundle = new Bundle();
+        if (examUpdating) {
+            examId = getIntent().getIntExtra(ExamListFragment.EXAM_ID, 0);
+            examName = getIntent().getStringExtra(ExamListFragment.EXAM_NAME);
+            bundle.putString(ExamListFragment.EXAM_NAME, examName);
+            bundle.putInt(ExamListFragment.EXAM_ID, examId);
+            bundle.putBoolean(ExamListFragment.EXAM_UPDATING, examUpdating);
+        }
+
+        setExamNameFragment = manager.findFragmentById(R.id.fragmentExam);
+        if (setExamNameFragment == null) {
+            setExamNameFragment = new ExamSetNameFragment();
+            setExamNameFragment.setArguments(bundle);
             manager.beginTransaction()
-                    .add(R.id.fragmentExam, fragment)
+                    .add(R.id.fragmentExam, setExamNameFragment)
                     .commit();
         }
     }
@@ -37,5 +55,23 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
     @Override
     public void onNegativeHintDialogClick(DialogFragment dialog) {
         Toast.makeText(getApplicationContext(), "Молодец!!!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSaveButtonClicked(String examName, int id, boolean examUpdating) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ExamListFragment.EXAM_NAME, examName);
+        bundle.putInt(ExamListFragment.EXAM_ID, examId);
+        bundle.putBoolean(ExamListFragment.EXAM_UPDATING, examUpdating);
+        startExamFragment = manager.findFragmentById(R.id.fragmentExam);
+        if (startExamFragment == null) {
+            startExamFragment = new ExamActivityFragment();
+            startExamFragment.setArguments(bundle);
+            manager.beginTransaction()
+                    .replace(R.id.fragmentExam, startExamFragment)
+                    .commit();
+        }
+
+
     }
 }

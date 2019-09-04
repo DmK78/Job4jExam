@@ -54,7 +54,7 @@ examsCore.getCurrentExam().setName(examsCore.getCurrentExamTempName());
 
         }else {
 
-            examsCore.saveExamToDb();
+            //examsCore.saveExamToDb(); пока убрал
         }
 
 

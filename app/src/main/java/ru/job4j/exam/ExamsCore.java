@@ -18,14 +18,11 @@ import ru.job4j.exam.Data.Question;
 public class ExamsCore {
     private static ExamsCore instance;
     public boolean examUptading = false;
-    private List<Exam> exams = new ArrayList<>();
-    private SQLiteDatabase db;
     private Context context;
     private Exam currentExam;
     private int currentQuestionPosition;
     private String currentExamTempName;
     private ExamBaseHelper databaseHelper;
-
     private int currentExamTempId;
     private final List<Question> questions = Arrays.asList(
             new Question(
@@ -72,21 +69,19 @@ public class ExamsCore {
 
     public void init(Context context) {
         this.context = context;
-        databaseHelper = ExamBaseHelper.getInstance(context);
+        databaseHelper = new ExamBaseHelper(context);
+
     }
 
-    public List<Exam> getAllExams() {
-        return exams;
-    }
 
     public List<Exam> loadExamsFromDb() {
-        exams.clear();
-        exams.addAll(databaseHelper.getAllExamsNames());
-        return exams;
+        List<Exam> result = new ArrayList<>();
+        result.addAll(databaseHelper.getAllExamsNames());
+        return result;
     }
 
-    public void saveExamToDb() {
-        databaseHelper.addExam(currentExam);
+    public void saveExamToDb(Exam exam) {
+        databaseHelper.addExam(exam);
     }
 
     public void countResult() {
@@ -167,7 +162,7 @@ public class ExamsCore {
         boolean result = false;
         if (databaseHelper.deleteAllExams()) {
             result = true;
-            exams.clear();
+            //exams.clear();
         }
         return result;
     }

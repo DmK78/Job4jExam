@@ -2,14 +2,12 @@ package ru.job4j.exam;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,10 +25,15 @@ import ru.job4j.exam.Data.Exam;
 
 public class ExamListFragment extends Fragment {
     private RecyclerView recycler;
-    private SQLiteDatabase store;
     private ExamsCore examsCore = ExamsCore.getInstance();
     public static ExamAdapter adapter;
     private List<Exam> exams;
+
+    private OnExamListButtonClickListener callback;
+
+    public static final String EXAM_NAME = "examToUpdateName";
+    public static final String EXAM_ID = "examToUpdateId";
+    public static final String EXAM_UPDATING = "udatingExam";
 
     @Nullable
     @Override
@@ -42,8 +45,6 @@ public class ExamListFragment extends Fragment {
         this.recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new ExamAdapter(getContext(), exams);
         this.recycler.setAdapter(adapter);
-
-
         return view;
     }
 
@@ -58,15 +59,13 @@ public class ExamListFragment extends Fragment {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.add_item:
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                fm.beginTransaction()
-                        .replace(R.id.list, new ExamAddFragment())
-                        .addToBackStack(null)
-                        .commit();
+                callback.onMenuAddExamButtonClicked();
+                //Intent intent = new Intent(getContext(), ExamSetNameFragment.class);
+                //startActivity(intent);
 
                 return true;
             case R.id.delete_item:
-                if(exams.size()>0){
+                if (exams.size() > 0) {
                     DialogFragment dialog = new ConfirmDeleteAllItemsDialog();
                     dialog.show(getFragmentManager(), "dialog_tag");
                 }
@@ -75,6 +74,18 @@ public class ExamListFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (OnExamListButtonClickListener) context; // назначаем активити при присоединении фрагмента к активити
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null; // обнуляем ссылку при отсоединении фрагмента от активити
     }
 
     public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamHolder> {
@@ -109,25 +120,22 @@ public class ExamListFragment extends Fragment {
             holder.view.findViewById(R.id.edit)
                     .setOnClickListener(
                             btn -> {
-                                examsCore.setCurrentExamTempName(exam.getName());
-                                examsCore.setCurrentExamTempId(exam.getId());
-                                FragmentManager fm = getActivity().getSupportFragmentManager();
-                                Fragment fragment = new ExamUpdateFragment();
-                                fm.beginTransaction()
-                                        .replace(R.id.list, fragment)
-                                        .addToBackStack(null)
-                                        .commit();
-                                //notifyDataSetChanged();
+                                callback.onEditExamButtonClicked(exam);
+                                /*Intent intent = new Intent(getContext(), ExamSetNameFragment.class);
+                                intent.putExtra(EXAM_NAME, exam.getName());
+                                intent.putExtra(EXAM_ID, exam.getId());
+                                intent.putExtra(EXAM_UPDATING, true);
+                                //examsCore.setCurrentExamTempName(exam.getName());
+                                //examsCore.setCurrentExamTempId(exam.getId());
+                                startActivity(intent);*/
                             }
                     );
 
             holder.view.findViewById(R.id.delete)
                     .setOnClickListener(
                             btn -> {
-
                                 exams.remove(exam);
                                 examsCore.deleteExamFromDB(exam);
-                                //notifyItemRemoved(i);
                                 notifyDataSetChanged();
                             }
                     );
@@ -154,5 +162,18 @@ public class ExamListFragment extends Fragment {
 
             }
         }
+    }
+
+    public void clearExams() {
+        exams.clear();
+        adapter.notifyDataSetChanged();
+    }
+
+    public interface OnExamListButtonClickListener {
+        void onMenuAddExamButtonClicked();
+
+        void onEditExamButtonClicked(Exam exam);
+
+
     }
 }

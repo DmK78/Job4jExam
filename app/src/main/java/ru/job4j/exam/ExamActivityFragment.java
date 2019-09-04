@@ -24,7 +24,6 @@ public class ExamActivityFragment extends Fragment  {
     public static final String HINT_FOR = "hint_for";
     public static final String QUESTION = "question";
     private int position = 0;
-    private boolean isLastAnswerWasRight = false;
     private RadioGroup radioGroupVariants;
     private Button buttonNext;
     private Button buttonHint;
@@ -34,24 +33,35 @@ public class ExamActivityFragment extends Fragment  {
     private boolean readOnly = false;
     private int currentQuestionPosition;
     private ExamsCore examsCore = ExamsCore.getInstance();
-    //List<Question> questions;
+    private String examName;
+    private int examId;
+    private boolean examUpdating=false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_main, container, false);
-        if (examsCore.examUptading) {
-            //getfromDB
-            //String tempName = examsCore.getCurrentExam().getName();
-            examsCore.setCurrentExam(examsCore.getExamFromDb(examsCore.getCurrentExamTempId()));
-            currentExam=examsCore.getCurrentExam();
+        if(getArguments()!=null){
+            examName=getArguments().getString(ExamListFragment.EXAM_NAME);
+            examUpdating=getArguments().getBoolean(ExamListFragment.EXAM_UPDATING);
+            if(examUpdating){
+                examId=getArguments().getInt(ExamListFragment.EXAM_ID);
+            }
 
-        } else {
-            examsCore.setCurrentExam(new Exam(examsCore.getCurrentExamTempName(), "", "", "", examsCore.getNewQuestions()));
-            currentExam=examsCore.getCurrentExam();
         }
 
-        position = 0;
+        if (examUpdating) {
+            //examsCore.setCurrentExam(examsCore.getExamFromDb(examsCore.getCurrentExamTempId()));
+            currentExam=examsCore.getExamFromDb(examId);
+
+        } else {
+            //examsCore.setCurrentExam(new Exam(examsCore.getCurrentExamTempName(), "", "", "", examsCore.getNewQuestions()));
+            currentExam=new Exam(examName,"","","",examsCore.getNewQuestions());
+            examsCore.saveExamToDb(currentExam);
+        }
+
+        //position = 0;
+
         radioGroupVariants = view.findViewById(R.id.RadioGroupVariants);
         buttonNext = view.findViewById(R.id.buttonNext);
         buttonHint = view.findViewById(R.id.buttonHint);

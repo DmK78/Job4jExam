@@ -9,16 +9,20 @@
         android:id="@+id/q_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_weight="100"
         android:text="TextView"
-        android:textSize="24dp"/>
+
+        android:textSize="15dp"/>
 
     <TextView
         android:id="@+id/result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_weight="20"
-        android:textSize="24dp"
+
+        android:textSize="15dp"
         android:text="90%" />
 
     <TextView
@@ -26,7 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="20"
-        android:textSize="24dp"
+        android:textSize="15dp"
+        android:layout_marginTop="5dp"
         android:text="12.07.2019" />
 
     <ImageView
