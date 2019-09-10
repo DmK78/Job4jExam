@@ -11,13 +11,13 @@ import android.widget.Toast;
 
 public class ExamActivity extends AppCompatActivity implements
         ConfirmHintDialogFragment.ConfirmHintDialogListener, ExamSetNameFragment.OnSaveExamNameButtonClickListener {
-    private final FragmentManager manager = getSupportFragmentManager();
+    private FragmentManager manager;
+    private Fragment setExamNameFragment;
+    private Fragment startExamFragment;
     private ExamsCore examsCore = ExamsCore.getInstance();
     private String examName;
     private int examId;
     private boolean examUpdating;
-    private Fragment setExamNameFragment;
-    private Fragment startExamFragment;
 
     @Override
     protected void onCreate(Bundle state) {
@@ -33,7 +33,7 @@ public class ExamActivity extends AppCompatActivity implements
             bundle.putInt(ExamListFragment.EXAM_ID, examId);
             bundle.putBoolean(ExamListFragment.EXAM_UPDATING, examUpdating);
         }
-
+        manager = getSupportFragmentManager();
         setExamNameFragment = manager.findFragmentById(R.id.fragmentExam);
         if (setExamNameFragment == null) {
             setExamNameFragment = new ExamSetNameFragment();
@@ -58,7 +58,7 @@ public class ExamActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onSaveButtonClicked(String examName, int id, boolean examUpdating) {
+    public void onSaveNewExamNameButtonClicked(String examName, int id, boolean examUpdating) {
         Bundle bundle = new Bundle();
         bundle.putString(ExamListFragment.EXAM_NAME, examName);
         bundle.putInt(ExamListFragment.EXAM_ID, examId);
@@ -66,11 +66,13 @@ public class ExamActivity extends AppCompatActivity implements
         startExamFragment = manager.findFragmentById(R.id.fragmentExam);
         if (startExamFragment == null) {
             startExamFragment = new ExamActivityFragment();
+        }
             startExamFragment.setArguments(bundle);
             manager.beginTransaction()
                     .replace(R.id.fragmentExam, startExamFragment)
+                    .addToBackStack(null)
                     .commit();
-        }
+
 
 
     }

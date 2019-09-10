@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class ExamSetNameFragment extends Fragment {
-    //ExamsCore examsCore = ExamsCore.getInstance();
     private String examName;
     private int examId;
     private boolean examUpdating;
@@ -36,7 +35,7 @@ public class ExamSetNameFragment extends Fragment {
         }
         save.setOnClickListener(
                 btn -> {
-                    callback.onSaveButtonClicked(edit.getText().toString(), examId, examUpdating);
+                    callback.onSaveNewExamNameButtonClicked(edit.getText().toString(), examId, examUpdating);
                 }
         );
         return view;
@@ -54,6 +53,6 @@ public class ExamSetNameFragment extends Fragment {
     }
 
     public interface OnSaveExamNameButtonClickListener {
-        void onSaveButtonClicked(String name, int id, boolean examUpdating);
+        void onSaveNewExamNameButtonClicked(String name, int id, boolean examUpdating);
     }
 }

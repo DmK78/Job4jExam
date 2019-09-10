@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity implements
         ConfirmDeleteAllItemsDialog.ConfirmDeleteAllItemsDialogListener, ExamListFragment.OnExamListButtonClickListener {
     private final FragmentManager manager = getSupportFragmentManager();
     private ExamsCore examsCore = ExamsCore.getInstance();
-    Fragment fragment = manager.findFragmentById(R.id.list);
+    private Fragment fragment = manager.findFragmentById(R.id.list);
 
     @Override
     protected void onCreate(Bundle state) {

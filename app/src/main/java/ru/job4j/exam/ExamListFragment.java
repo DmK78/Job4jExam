@@ -39,7 +39,7 @@ public class ExamListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.exams, container, false);
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(false);
         exams = examsCore.loadExamsFromDb();
         this.recycler = view.findViewById(R.id.examsRecyclerView);
         this.recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
