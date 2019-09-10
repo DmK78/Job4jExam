@@ -18,7 +18,7 @@ public class ExamBaseHelper extends SQLiteOpenHelper {
     SQLiteDatabase dbWrite = getWritableDatabase();
 
     public static final String DB = "exams.db";
-    public static final int VERSION = 33;
+    public static final int VERSION = 40;
 
     ExamBaseHelper(Context context) {
         super(context, DB, null, VERSION);
@@ -39,7 +39,7 @@ public class ExamBaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public List<Exam> getAllExamsNames() {
+    public List<Exam> getAllExamsWithoutQuestions() {
         List<Exam> result = new ArrayList<>();
         Cursor cursor = dbRead.query(
                 ExamDbSchema.ExamTable.NAME,
@@ -215,5 +215,38 @@ public class ExamBaseHelper extends SQLiteOpenHelper {
             }
         }
         return result;
+    }
+
+    public void saveQuestionToDb(int id, Question question) {
+
+        ContentValues valueExam = new ContentValues();
+        ContentValues valueQuestion = new ContentValues();
+        valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.NAME, question.getName());
+        valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.DESC, question.getDesc());
+        valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.EXAM_ID, id);
+        valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.ANSWER_ID, question.getAnswer());
+        valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.POSITION, question.getPosition());
+        valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.RIGHT_ANSWER, question.getRigthAnswer());
+        dbWrite.update(ExamDbSchema.QuestionsTable.NAME, valueQuestion, "id =?",
+                new String[]{String.valueOf(question.getId())});
+
+    }
+
+    public void clearExam(Exam exam) {
+        ContentValues valueExam = new ContentValues();
+        valueExam.put(ExamDbSchema.ExamTable.Cols.RESULT, "");
+        valueExam.put(ExamDbSchema.ExamTable.Cols.DATE, "");
+        dbWrite.update(ExamDbSchema.ExamTable.NAME, valueExam, "id =?",
+                new String[]{String.valueOf(exam.getId())});
+
+        for (Question question : exam.getQuestions()) {
+            ContentValues valueQuestion = new ContentValues();
+            question.setAnswer(-1);
+            valueQuestion.put(ExamDbSchema.QuestionsTable.Cols.ANSWER_ID, question.getAnswer());
+            dbWrite.update(ExamDbSchema.QuestionsTable.NAME, valueQuestion, "id =?",
+                    new String[]{String.valueOf(question.getId())});
+        }
+
+
     }
 }

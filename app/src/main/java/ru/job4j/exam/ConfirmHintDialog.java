@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-public class ConfirmHintDialogFragment extends DialogFragment {
+public class ConfirmHintDialog extends DialogFragment {
     private ConfirmHintDialogListener callback;
 
 
@@ -18,13 +18,13 @@ public class ConfirmHintDialogFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        callback.onPositiveHintDialogClick(ConfirmHintDialogFragment.this);
+                        callback.onPositiveHintDialogClick(ConfirmHintDialog.this);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        callback.onNegativeHintDialogClick(ConfirmHintDialogFragment.this);
+                        callback.onNegativeHintDialogClick(ConfirmHintDialog.this);
                     }
                 })
                 .create();

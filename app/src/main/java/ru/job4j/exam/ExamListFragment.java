@@ -2,7 +2,6 @@ package ru.job4j.exam;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.job4j.exam.Data.Exam;
+import ru.job4j.exam.Data.Question;
 
 public class ExamListFragment extends Fragment {
     private RecyclerView recycler;
@@ -29,7 +29,6 @@ public class ExamListFragment extends Fragment {
     public static ExamAdapter adapter;
     private List<Exam> exams;
 
-    private OnExamListButtonClickListener callback;
 
     public static final String EXAM_NAME = "examToUpdateName";
     public static final String EXAM_ID = "examToUpdateId";
@@ -39,53 +38,12 @@ public class ExamListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.exams, container, false);
-        setHasOptionsMenu(false);
-        exams = examsCore.loadExamsFromDb();
+        exams = examsCore.loadExams();
         this.recycler = view.findViewById(R.id.examsRecyclerView);
         this.recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new ExamAdapter(getContext(), exams);
         this.recycler.setAdapter(adapter);
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.activity_exams, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.add_item:
-                callback.onMenuAddExamButtonClicked();
-                //Intent intent = new Intent(getContext(), ExamSetNameFragment.class);
-                //startActivity(intent);
-
-                return true;
-            case R.id.delete_item:
-                if (exams.size() > 0) {
-                    DialogFragment dialog = new ConfirmDeleteAllItemsDialog();
-                    dialog.show(getFragmentManager(), "dialog_tag");
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        callback = (OnExamListButtonClickListener) context; // назначаем активити при присоединении фрагмента к активити
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        callback = null; // обнуляем ссылку при отсоединении фрагмента от активити
     }
 
     public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamHolder> {
@@ -110,33 +68,30 @@ public class ExamListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ExamHolder holder, int i) {
             Exam exam = exams.get(i);
-            if ((i % 2) == 0) {
-                holder.view.setBackgroundColor(Color.parseColor("#d8d8d8"));
-            }
             holder.text.setText(exam.getName());
-            holder.result.setText(exam.getResult());
+            if (!exam.getResult().equals("")) {
+                holder.result.setText(exam.getResult());
+            } else {
+                holder.result.setText("не пройден");
+            }
             holder.date.setText(exam.getDate());
-
             holder.view.findViewById(R.id.edit)
                     .setOnClickListener(
                             btn -> {
-                                callback.onEditExamButtonClicked(exam);
-                                /*Intent intent = new Intent(getContext(), ExamSetNameFragment.class);
-                                intent.putExtra(EXAM_NAME, exam.getName());
+                                Intent intent = new Intent(getContext(), ExamActivity.class);
                                 intent.putExtra(EXAM_ID, exam.getId());
-                                intent.putExtra(EXAM_UPDATING, true);
-                                //examsCore.setCurrentExamTempName(exam.getName());
-                                //examsCore.setCurrentExamTempId(exam.getId());
-                                startActivity(intent);*/
+                                startActivity(intent);
                             }
                     );
 
-            holder.view.findViewById(R.id.delete)
+            holder.view.findViewById(R.id.restart)
                     .setOnClickListener(
                             btn -> {
-                                exams.remove(exam);
-                                examsCore.deleteExamFromDB(exam);
-                                notifyDataSetChanged();
+                                DialogFragment dialog = new ConfirmRestartExamDialog();
+                                Bundle bundle = new Bundle();
+                                bundle.putInt(ExamListFragment.EXAM_ID, exam.getId());
+                                dialog.setArguments(bundle);
+                                dialog.show(getFragmentManager(), "dialog_tag");
                             }
                     );
         }
@@ -156,24 +111,10 @@ public class ExamListFragment extends Fragment {
                 text = itemView.findViewById(R.id.q_text);
                 result = itemView.findViewById(R.id.result);
                 date = itemView.findViewById(R.id.date);
-                imageViewDelete = itemView.findViewById(R.id.delete);
+                imageViewDelete = itemView.findViewById(R.id.restart);
                 imageViewEdit = itemView.findViewById(R.id.edit);
                 this.view = itemView;
-
             }
         }
-    }
-
-    public void clearExams() {
-        exams.clear();
-        adapter.notifyDataSetChanged();
-    }
-
-    public interface OnExamListButtonClickListener {
-        void onMenuAddExamButtonClicked();
-
-        void onEditExamButtonClicked(Exam exam);
-
-
     }
 }
