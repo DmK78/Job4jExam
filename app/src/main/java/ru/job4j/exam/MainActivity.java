@@ -7,16 +7,20 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity implements
         ConfirmRestartExamDialog.ConfirmRestartExamDialogListener {
     private final FragmentManager manager = getSupportFragmentManager();
-    private ExamsCore examsCore = ExamsCore.getInstance();
+    @Inject
+    ExamsCore examsCore;
     private Fragment fragment = manager.findFragmentById(R.id.list);
 
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_exam_list);
+        App.getExamCore().injectTo(this);
         examsCore.init(getApplicationContext());
         if (fragment == null) {
             fragment = new ExamListFragment();

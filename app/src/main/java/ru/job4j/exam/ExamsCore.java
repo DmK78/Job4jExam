@@ -11,7 +11,7 @@ import ru.job4j.exam.Data.Option;
 import ru.job4j.exam.Data.Question;
 
 public class ExamsCore {
-    private static ExamsCore instance;
+
     private Context context;
     private ExamBaseHelper databaseHelper;
     private final List<Exam> exams = Arrays.asList(new Exam("Exam 1", "", "", "", Arrays.asList(
@@ -77,16 +77,6 @@ public class ExamsCore {
                     ), 2, 4
             )
     )));
-
-    private ExamsCore() {
-    }
-
-    public static ExamsCore getInstance() {
-        if (instance == null) {
-            instance = new ExamsCore();
-        }
-        return instance;
-    }
 
     public void init(Context context) {
         this.context = context;

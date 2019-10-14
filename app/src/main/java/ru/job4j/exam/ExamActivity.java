@@ -11,6 +11,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import ru.job4j.exam.Data.Exam;
 import ru.job4j.exam.Data.Option;
 import ru.job4j.exam.Data.Question;
@@ -26,13 +28,15 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
     private Exam currentExam;
     private Button buttonPrew;
     private TextView textViewQuestion;
-    private ExamsCore examsCore = ExamsCore.getInstance();
+    @Inject
+    ExamsCore examsCore;
     private int examId;
 
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
+        App.getExamCore().injectTo(this);
         Intent intent = getIntent();
         if(intent!=null){
             examId=intent.getIntExtra(ExamListFragment.EXAM_ID,-1);

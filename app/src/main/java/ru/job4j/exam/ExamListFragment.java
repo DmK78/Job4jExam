@@ -20,12 +20,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ru.job4j.exam.Data.Exam;
 import ru.job4j.exam.Data.Question;
 
 public class ExamListFragment extends Fragment {
     private RecyclerView recycler;
-    private ExamsCore examsCore = ExamsCore.getInstance();
+    @Inject
+    ExamsCore examsCore;
     public static ExamAdapter adapter;
     private List<Exam> exams;
 
@@ -38,6 +41,7 @@ public class ExamListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.exams, container, false);
+        App.getExamCore().injectTo(this);
         exams = examsCore.loadExams();
         this.recycler = view.findViewById(R.id.examsRecyclerView);
         this.recycler.setLayoutManager(new LinearLayoutManager(getActivity()));

@@ -10,6 +10,8 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import ru.job4j.exam.Data.Exam;
 import ru.job4j.exam.Data.Question;
 
@@ -19,13 +21,15 @@ public class ResultActivity extends AppCompatActivity {
     public static final String CURRENT_DATE = "currentDate";
     public static final String PERCENT_OF_RIGHT_ANSWERS = "percentOfRightAnswers";
     public static final String HAS_SAVED = "hasSaved";
-    private ExamsCore examsCore = ExamsCore.getInstance();
+    @Inject
+    ExamsCore examsCore;
     private Exam currentExam;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+        App.getExamCore().injectTo(this);
         textViewRightAnswers = findViewById(R.id.textViewRightAnswers);
         textViewAnswers = findViewById(R.id.textViewTotal);
         Intent intent = getIntent();
@@ -38,7 +42,7 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     public void saveExam(View view) {
-    examsCore.updateExamToDb(currentExam);
+        examsCore.updateExamToDb(currentExam);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
