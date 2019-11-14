@@ -10,9 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,7 +20,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ru.job4j.exam.Data.Exam;
-import ru.job4j.exam.Data.Question;
 
 public class ExamListFragment extends Fragment {
     private RecyclerView recycler;
@@ -82,7 +78,7 @@ public class ExamListFragment extends Fragment {
             holder.view.findViewById(R.id.edit)
                     .setOnClickListener(
                             btn -> {
-                                Intent intent = new Intent(getContext(), ExamActivity.class);
+                                Intent intent = new Intent(getContext(), QuestionActivity.class);
                                 intent.putExtra(EXAM_ID, exam.getId());
                                 startActivity(intent);
                             }

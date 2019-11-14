@@ -1,10 +1,16 @@
 package ru.job4j.exam;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -17,7 +23,7 @@ import ru.job4j.exam.Data.Exam;
 import ru.job4j.exam.Data.Option;
 import ru.job4j.exam.Data.Question;
 
-public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog.ConfirmHintDialogListener {
+public class QuestionFragment extends Fragment {
 
     public static final String HINT_FOR = "hint_for";
     public static final String QUESTION = "question";
@@ -32,12 +38,13 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
     ExamsCore examsCore;
     private int examId;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle state) {
-        super.onCreate(state);
-        setContentView(R.layout.activity_main);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_main, container, false);
+
         App.getExamCore().injectTo(this);
-        Intent intent = getIntent();
+        Intent intent = getActivity().getIntent();
         if (intent != null) {
             examId = intent.getIntExtra(ExamListFragment.EXAM_ID, -1);
         }
@@ -53,16 +60,18 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
         if (count == currentExam.getQuestions().size()) {
             position = 0;
         }
-        radioGroupVariants = findViewById(R.id.RadioGroupVariants);
-        buttonNext = findViewById(R.id.buttonNext);
-        buttonHint = findViewById(R.id.buttonHint);
-        buttonPrev = findViewById(R.id.buttonPrew);
-        textViewQuestion = findViewById(R.id.textViewQuestion);
+        radioGroupVariants = view.findViewById(R.id.RadioGroupVariants);
+        buttonNext = view.findViewById(R.id.buttonNext);
+        buttonHint = view.findViewById(R.id.buttonHint);
+        buttonPrev = view.findViewById(R.id.buttonPrew);
+        textViewQuestion = view.findViewById(R.id.textViewQuestion);
         buttonNext.setOnClickListener(this::nextButton);
         buttonPrev.setOnClickListener(this::prevButton);
         buttonHint.setOnClickListener(this::hintButton);
         this.fillForm();
+        return view;
     }
+
 
     private void fillForm() {
         buttonPrev.setEnabled(position != 0);
@@ -83,7 +92,7 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
     private void nextButton(View view) {
         int radioButtonID = radioGroupVariants.getCheckedRadioButtonId();
         if (radioButtonID < 0) {
-            Toast.makeText(getApplicationContext(), "Choose the answer", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Choose the answer", Toast.LENGTH_SHORT).show();
         } else {
             View radioButton = radioGroupVariants.findViewById(radioButtonID);
             int idx = radioGroupVariants.indexOfChild(radioButton);
@@ -93,7 +102,7 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
             currentExam.getQuestions().get(position).setAnswer(id - 1);
             examsCore.saveQuestionToDb(currentExam.getId(), currentExam.getQuestions().get(position));
             if (position == currentExam.getQuestions().size() - 1) {
-                Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+                Intent intent = new Intent(getContext(), ResultActivity.class);
                 intent.putExtra(ExamListFragment.EXAM_ID, currentExam.getId());
                 startActivity(intent);
             } else {
@@ -109,20 +118,12 @@ public class ExamActivity extends AppCompatActivity implements ConfirmHintDialog
     }
 
     private void hintButton(View view) {
-        DialogFragment dialog = new ConfirmHintDialog();
-        dialog.show(getSupportFragmentManager(), "dialog_tag");
+        DialogFragment dialog = ConfirmHintDialog.of(position, currentExam.getQuestions().get(position).getName());
+        dialog.show(getActivity().getSupportFragmentManager(), "dialog_tag");
     }
 
-    @Override
-    public void onPositiveHintDialogClick(DialogFragment dialog) {
-        Intent intent = new Intent(getApplicationContext(), HintActivity.class);
-        intent.putExtra(ExamActivity.HINT_FOR, position);
-        intent.putExtra(ExamActivity.QUESTION, currentExam.getQuestions().get(position).getName());
-        startActivity(intent);
-    }
 
-    @Override
-    public void onNegativeHintDialogClick(DialogFragment dialog) {
-        Toast.makeText(getApplicationContext(), "Молодец!!!", Toast.LENGTH_SHORT).show();
-    }
+
+
+
 }

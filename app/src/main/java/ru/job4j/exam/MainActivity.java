@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onPositiveRestartExamDialogClick(DialogFragment dialog, int id) {
         examsCore.clearExam(examsCore.getExamFromDb(id));
-        Intent intent = new Intent(getApplicationContext(), ExamActivity.class);
+        Intent intent = new Intent(getApplicationContext(), QuestionFragment.class);
         intent.putExtra(ExamListFragment.EXAM_ID, id);
         startActivity(intent);
     }

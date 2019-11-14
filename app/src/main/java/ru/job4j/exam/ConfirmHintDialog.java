@@ -9,6 +9,9 @@ import android.support.v4.app.DialogFragment;
 
 public class ConfirmHintDialog extends DialogFragment {
     private ConfirmHintDialogListener callback;
+    private int id;
+    private String question;
+
 
 
     @Override
@@ -18,7 +21,7 @@ public class ConfirmHintDialog extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        callback.onPositiveHintDialogClick(ConfirmHintDialog.this);
+                        callback.onPositiveHintDialogClick(ConfirmHintDialog.this, id, question);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -47,8 +50,16 @@ public class ConfirmHintDialog extends DialogFragment {
         callback = null;
     }
 
+    public static ConfirmHintDialog of (int id, String question){
+        ConfirmHintDialog confirmHintDialog = new ConfirmHintDialog();
+        confirmHintDialog.id=id;
+        confirmHintDialog.question= question;
+        return confirmHintDialog;
+    }
+
     public interface ConfirmHintDialogListener {
-        void onPositiveHintDialogClick(DialogFragment dialog);
+        void onPositiveHintDialogClick(DialogFragment dialog, int id, String question);
+
         void onNegativeHintDialogClick(DialogFragment dialog);
     }
 }
