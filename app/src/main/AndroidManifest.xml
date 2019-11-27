@@ -13,7 +13,7 @@
         <activity android:name=".ResultActivity" />
         <activity android:name=".HintActivity" />
         <activity android:name=".QuestionActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ExamsListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

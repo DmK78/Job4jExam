@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements
+public class ExamsListActivity extends BaseActivity implements
         ConfirmRestartExamDialog.ConfirmRestartExamDialogListener {
     private final FragmentManager manager = getSupportFragmentManager();
     @Inject
@@ -19,15 +19,20 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
-        setContentView(R.layout.activity_exam_list);
+        //setContentView(R.layout.activity_exam_list);
         App.getExamCore().injectTo(this);
         examsCore.init(getApplicationContext());
-        if (fragment == null) {
+        /*if (fragment == null) {
             fragment = new ExamListFragment();
             manager.beginTransaction()
                     .add(R.id.list, fragment)
                     .commit();
-        }
+        }*/
+    }
+
+    @Override
+    public Fragment loadFrg() {
+        return new ExamListFragment();
     }
 
 

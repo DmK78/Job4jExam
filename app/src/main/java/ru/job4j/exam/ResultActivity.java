@@ -43,7 +43,7 @@ public class ResultActivity extends AppCompatActivity {
 
     public void saveExam(View view) {
         examsCore.updateExamToDb(currentExam);
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ExamsListActivity.class);
         startActivity(intent);
     }
 
