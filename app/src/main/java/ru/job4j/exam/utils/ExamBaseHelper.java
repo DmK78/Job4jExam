@@ -1,4 +1,4 @@
-package ru.job4j.exam;
+package ru.job4j.exam.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,16 +9,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.job4j.exam.Data.Exam;
-import ru.job4j.exam.Data.Option;
-import ru.job4j.exam.Data.Question;
+import ru.job4j.exam.ExamListFragment;
+import ru.job4j.exam.models.Exam;
+import ru.job4j.exam.models.Option;
+import ru.job4j.exam.models.Question;
 
 public class ExamBaseHelper extends SQLiteOpenHelper {
     SQLiteDatabase dbRead = getReadableDatabase();
     SQLiteDatabase dbWrite = getWritableDatabase();
 
     public static final String DB = "exams.db";
-    public static final int VERSION = 40;
+    public static final int VERSION = 41;
 
     ExamBaseHelper(Context context) {
         super(context, DB, null, VERSION);

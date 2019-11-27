@@ -14,13 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.job4j.exam.Data.Exam;
+import ru.job4j.exam.models.Exam;
+import ru.job4j.exam.utils.ExamsCore;
 
 public class ExamListFragment extends Fragment {
     private RecyclerView recycler;
@@ -29,10 +29,7 @@ public class ExamListFragment extends Fragment {
     public static ExamAdapter adapter;
     private List<Exam> exams;
 
-
-    public static final String EXAM_NAME = "examToUpdateName";
     public static final String EXAM_ID = "examToUpdateId";
-    public static final String EXAM_UPDATING = "udatingExam";
 
     @Nullable
     @Override
@@ -48,16 +45,13 @@ public class ExamListFragment extends Fragment {
     }
 
     public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamHolder> {
-
         private final List<Exam> exams;
         private LayoutInflater inflater;
-
 
         public ExamAdapter(Context context, List<Exam> exams) {
             this.inflater = LayoutInflater.from(context);
             this.exams = exams;
         }
-
 
         @NonNull
         @Override

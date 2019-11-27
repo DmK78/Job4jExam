@@ -10,6 +10,9 @@
     <string name="title_choose_date_and_time">Выберите дату и время</string>
     <string name="add_item">Добавить</string>
     <string name="delete_item">Удалить</string>
+    <string name="goodDecision">Молодец!!!</string>
+    <string name="choose_the_answer">Выберите ответ</string>
+    <string name="hint">Подсказка</string>
     <string-array name="domain_arrays">
         <item>Выберите область</item>
         <item>Московская</item>

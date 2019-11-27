@@ -1,4 +1,4 @@
-package ru.job4j.exam.Data;
+package ru.job4j.exam.models;
 
 import java.util.List;
 import java.util.Objects;

@@ -11,4 +11,7 @@
     <string name="title_choose_date_and_time">Choose date and time</string>
     <string name="delete_item">Delete</string>
     <string name="add_item">Add</string>
+    <string name="choose_the_answer">Choose the answer</string>
+    <string name="goodDecision">Nice!!!</string>
+    <string name="hint">Hint</string>
 </resources>

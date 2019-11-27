@@ -8,6 +8,7 @@ import ru.job4j.exam.ExamsListActivity;
 import ru.job4j.exam.QuestionFragment;
 import ru.job4j.exam.ExamListFragment;
 import ru.job4j.exam.ResultActivity;
+import ru.job4j.exam.ResultFragment;
 
 @Singleton
 @Component(modules = ExamCoreModule.class)
@@ -15,5 +16,5 @@ public interface ExamCoreComponent {
     void injectTo(ExamListFragment examListFragment);
     void injectTo(ExamsListActivity examsListActivity);
     void injectTo(QuestionFragment questionFragment);
-    void injectTo(ResultActivity resultActivity);
+    void injectTo(ResultFragment resultFragment);
 }

@@ -4,7 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import ru.job4j.exam.ExamsCore;
+import ru.job4j.exam.utils.ExamsCore;
 
 
 @Module

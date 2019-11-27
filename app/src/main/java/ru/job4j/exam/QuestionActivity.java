@@ -23,6 +23,6 @@ public class QuestionActivity extends BaseActivity implements ConfirmHintDialog.
 
     @Override
     public void onNegativeHintDialogClick(DialogFragment dialog) {
-        Toast.makeText(getApplicationContext(), "Молодец!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), R.string.goodDecision, Toast.LENGTH_SHORT).show();
     }
 }

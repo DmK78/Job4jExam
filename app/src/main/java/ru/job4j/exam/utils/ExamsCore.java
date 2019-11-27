@@ -1,4 +1,4 @@
-package ru.job4j.exam;
+package ru.job4j.exam.utils;
 
 import android.content.Context;
 
@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ru.job4j.exam.Data.Exam;
-import ru.job4j.exam.Data.Option;
-import ru.job4j.exam.Data.Question;
+import ru.job4j.exam.models.Exam;
+import ru.job4j.exam.models.Option;
+import ru.job4j.exam.models.Question;
 
 public class ExamsCore {
 

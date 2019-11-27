@@ -7,11 +7,12 @@
 
     <TextView
         android:id="@+id/textViewQuestion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         style="@style/CustomText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10pt"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAlignment="center" />
     <TextView
         android:id="@+id/textViewHint"
         android:layout_width="wrap_content"

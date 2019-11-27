@@ -1,13 +1,11 @@
 package ru.job4j.exam;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +15,14 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
-import ru.job4j.exam.Data.Exam;
-import ru.job4j.exam.Data.Option;
-import ru.job4j.exam.Data.Question;
+import ru.job4j.exam.models.Exam;
+import ru.job4j.exam.models.Option;
+import ru.job4j.exam.models.Question;
+import ru.job4j.exam.utils.ExamsCore;
 
 public class QuestionFragment extends Fragment {
 
@@ -92,7 +93,7 @@ public class QuestionFragment extends Fragment {
     private void nextButton(View view) {
         int radioButtonID = radioGroupVariants.getCheckedRadioButtonId();
         if (radioButtonID < 0) {
-            Toast.makeText(getContext(), "Choose the answer", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.choose_the_answer, Toast.LENGTH_SHORT).show();
         } else {
             View radioButton = radioGroupVariants.findViewById(radioButtonID);
             int idx = radioGroupVariants.indexOfChild(radioButton);
@@ -119,7 +120,14 @@ public class QuestionFragment extends Fragment {
 
     private void hintButton(View view) {
         DialogFragment dialog = ConfirmHintDialog.of(position, currentExam.getQuestions().get(position).getName());
-        dialog.show(getActivity().getSupportFragmentManager(), "dialog_tag");
+        dialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog_tag");
+    }
+    public static QuestionFragment of(int examId) {
+        QuestionFragment questionFragment = new QuestionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ExamListFragment.EXAM_ID, examId);
+        questionFragment.setArguments(bundle);
+        return questionFragment;
     }
 
 
