@@ -7,12 +7,12 @@
 
     <TextView
         android:id="@+id/textViewQuestion"
-        android:textSize="30sp"
-        android:textStyle="bold|italic"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="50dp"
-        android:text="@string/hello" />
+        android:text="@string/hello"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold|italic" />
 
     <RadioGroup
         android:id="@+id/RadioGroupVariants"
