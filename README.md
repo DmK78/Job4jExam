@@ -1,6 +1,6 @@
-#О приложении
+# О приложении
 Приложения для сдачи экзаменов. Каждый экзамен можно пересдать или отредактировать.
-#About
+# About
 Applications for passing exams. Each exam can be retaken or edited.
 
 
