@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/DmK78/Job4jExam.svg?branch=master)](https://travis-ci.org/DmK78/Job4jExam)
 # О приложении
 Приложения для сдачи экзаменов. Каждый экзамен можно пересдать или отредактировать.
 # About
